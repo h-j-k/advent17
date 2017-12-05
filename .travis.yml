@@ -15,10 +15,10 @@ cache:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: "${gh_token}"
-  local_dir: "$TRAVIS_BUILD_DIR/build/docs"
+  github_token: "${GITHUB_TOKEN}"
+  local_dir: "${TRAVIS_BUILD_DIR}/build/docs"
   on:
     branch: master
 after_success:
-- gradle generateJavadoc && cp "$TRAVIS_BUILD_DIR/README.md" "$TRAVIS_BUILD_DIR/build/docs"
+- gradle generateJavadoc && cp "${TRAVIS_BUILD_DIR}/README.md" "${TRAVIS_BUILD_DIR}/build/docs"
 - gradle jacocoTestReport sonarqube && bash <(curl -s https://codecov.io/bash)
