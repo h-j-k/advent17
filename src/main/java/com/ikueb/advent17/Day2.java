@@ -1,0 +1,44 @@
+package com.ikueb.advent17;
+
+import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+import java.util.List;
+import java.util.function.ToIntFunction;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+class Day2 {
+
+    static int checksumInput(List<String> input,
+                             ToIntFunction<int[]> function) {
+        return checksum(input.stream()
+                .map(Pattern.compile("\\s+")::splitAsStream)
+                .map(s -> s.mapToInt(Integer::parseInt).toArray())
+                .collect(Collectors.toList()), function);
+    }
+
+    private static int checksum(List<int[]> matrix,
+                                ToIntFunction<int[]> function) {
+        return matrix.stream()
+                .mapToInt(function)
+                .sum();
+    }
+
+    static int diff(int... values) {
+        IntSummaryStatistics stats = Arrays.stream(values).summaryStatistics();
+        return stats.getMax() - stats.getMin();
+    }
+
+    static int evenlyDivisible(int... values) {
+        for (int i = 0; i < values.length; i++) {
+            for (int j = i + 1; j < values.length; j++) {
+                int a = values[i];
+                int b = values[j];
+                if (a % b == 0 || b % a == 0) {
+                    return a > b ? a / b : b / a;
+                }
+            }
+        }
+        throw new RuntimeException("Unexpected outcome, there must be only one evenly divisible pair");
+    }
+}

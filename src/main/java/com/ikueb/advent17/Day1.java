@@ -6,21 +6,21 @@ import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-public class Day1 {
+class Day1 {
 
-    public static int compute(String value, ToIntFunction<int[]> function) {
+    static int compute(String value, ToIntFunction<int[]> function) {
         return function.applyAsInt(Pattern.compile("")
                 .splitAsStream(value)
                 .mapToInt(Integer::parseInt)
                 .toArray());
     }
 
-    public static int sum(int... values) {
+    static int sum(int... values) {
         return sum(values.length, i -> i + 1 == values.length ? 0 : i + 1,
                 (a, b) -> a == b ? a : 0, values);
     }
 
-    public static int jumpSum(int... values) {
+    static int jumpSum(int... values) {
         int half = values.length / 2;
         return sum(half, i -> i + half, (a, b) -> a == b ? 2 * a : 0, values);
     }
