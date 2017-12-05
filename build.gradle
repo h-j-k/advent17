@@ -1,0 +1,37 @@
+plugins {
+    id 'org.sonarqube' version '2.3'
+}
+
+group 'com.ikueb'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'jacoco'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'org.testng', name: 'testng', version: '[6.10,)'
+    testCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '[2.0.0.0,)'
+}
+
+test {
+    useTestNG()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+task generateJavadoc(type: Javadoc) {
+    source = project.sourceSets.main.allJava
+    options.showFromPrivate()
+}
