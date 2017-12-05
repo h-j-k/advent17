@@ -39,5 +39,4 @@ public class Day2Test {
     public void testChecksumForEvenlyDivisible() {
         assertThat(checksumInput(MATRIX, Day2::evenlyDivisible), equalTo(308));
     }
-
 }

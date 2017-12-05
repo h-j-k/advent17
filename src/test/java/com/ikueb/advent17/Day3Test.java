@@ -20,5 +20,4 @@ public class Day3Test {
     public void testGetFirstAfter() {
         assertThat(getFirstAfter(INPUT), equalTo(312453));
     }
-
 }

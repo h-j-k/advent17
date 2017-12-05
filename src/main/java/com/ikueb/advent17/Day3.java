@@ -45,7 +45,7 @@ class Day3 {
     }
 
     private static int getLayerMax(int layer) {
-        return (int) Math.pow(1 + 2 * layer, 2);
+        return (int) Math.pow(1 + (double) 2 * layer, 2);
     }
 
     private enum Place {
