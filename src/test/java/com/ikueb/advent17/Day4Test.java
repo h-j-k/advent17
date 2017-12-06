@@ -10,6 +10,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Day4Test {
+    
+    @Test
+    public void testIsValid() {
+        assertThat(INPUT.stream().filter(Day4::isValid).count(), equalTo(466L));
+    }
+
+    @Test
+    public void testIsValidAdvanced() {
+        assertThat(INPUT.stream().filter(v -> isValid(v, Day4::reform)).count(), equalTo(251L));
+    }
 
     private static final List<String> INPUT = Arrays.asList(
             "pphsv ojtou brvhsj cer ntfhlra udeh ccgtyzc zoyzmh jum lugbnk",
@@ -525,14 +535,4 @@ public class Day4Test {
             "spjb xkkak anuvk ejoklh nyerw bsjp zxuq vcwitnd xxtjmjg zfgq xkpf",
             "juo pmiyoh xxk myphio ogfyf dovlmwm moevao qqxidn"
     );
-
-    @Test
-    public void testIsValid() {
-        assertThat(INPUT.stream().filter(Day4::isValid).count(), equalTo(466L));
-    }
-
-    @Test
-    public void testIsValidAdvanced() {
-        assertThat(INPUT.stream().filter(v -> isValid(v, Day4::reform)).count(), equalTo(251L));
-    }
 }
