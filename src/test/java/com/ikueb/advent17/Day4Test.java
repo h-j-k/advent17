@@ -10,7 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Day4Test {
-    
+
     @Test
     public void testIsValid() {
         assertThat(INPUT.stream().filter(Day4::isValid).count(), equalTo(466L));
