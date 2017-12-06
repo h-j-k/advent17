@@ -6,7 +6,11 @@ import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-class Day1 {
+final class Day1 {
+
+    private Day1() {
+        // empty
+    }
 
     static int compute(String value, ToIntFunction<int[]> function) {
         return function.applyAsInt(Pattern.compile("")

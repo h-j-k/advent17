@@ -5,7 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-class Day3 {
+final class Day3 {
+
+    private Day3() {
+        // empty
+    }
 
     static int stepsTo(int n) {
         int layer = getLayer(n);
@@ -61,8 +65,7 @@ class Day3 {
                  i += 2, max -= diff) {
                 if (max == n) {
                     return values()[i - 1];
-                }
-                if (max - diff < n) {
+                } else if (max - diff < n) {
                     return values()[i];
                 }
             }
@@ -78,7 +81,7 @@ class Day3 {
             int innerLayerMax = getLayerMax(layer - 1);
             if (isCorner()) {
                 int inner = innerLayerMax - (layer - 1) * ordinal();
-                return this == Place.BOTTOM_RIGHT
+                return this == BOTTOM_RIGHT
                         ? IntStream.of(n - 1, inner, inner + 1)
                         : IntStream.of(n - 1, inner);
             }
@@ -89,7 +92,7 @@ class Day3 {
             } else if (n - 2 == innerLayerMax || get(n - 1).isCorner()) {
                 result[1] = n - 2;
             }
-            if (this != Place.BOTTOM && get(n + 1).isCorner()) {
+            if (this != BOTTOM && get(n + 1).isCorner()) {
                 result = Arrays.copyOf(result, result.length - 1);
             }
             return Arrays.stream(result);

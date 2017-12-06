@@ -7,7 +7,11 @@ import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-class Day2 {
+final class Day2 {
+
+    private Day2() {
+        // empty
+    }
 
     static int checksumInput(List<String> input,
                              ToIntFunction<int[]> function) {

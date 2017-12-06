@@ -6,9 +6,13 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-class Day4 {
+final class Day4 {
 
     private static final Pattern SPLITTER = Pattern.compile("\\s+");
+
+    private Day4() {
+        // empty
+    }
 
     static boolean isValid(String passphrase) {
         return isValid(passphrase, UnaryOperator.identity());
