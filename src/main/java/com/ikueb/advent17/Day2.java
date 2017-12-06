@@ -43,6 +43,6 @@ final class Day2 {
                 }
             }
         }
-        throw new RuntimeException("Unexpected outcome, there must be only one evenly divisible pair");
+        throw new UnexpectedOutcomeException("There must be only one evenly divisible pair");
     }
 }

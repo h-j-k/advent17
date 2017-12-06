@@ -26,9 +26,6 @@ final class Day3 {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 1; ; i++) {
             if (find(map, i) > min) {
-                System.out.printf("n=%d @ layer %d#%s, neighbours %s%n",
-                        i, getLayer(i), Place.get(i),
-                        Arrays.toString(Place.around(i).toArray()));
                 return map.get(i);
             }
         }
@@ -69,7 +66,7 @@ final class Day3 {
                     return values()[i];
                 }
             }
-            throw new RuntimeException("Expecting a result");
+            throw new UnexpectedOutcomeException();
         }
 
         boolean isCorner() {
