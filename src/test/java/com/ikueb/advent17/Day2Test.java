@@ -3,6 +3,7 @@ package com.ikueb.advent17;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.ikueb.advent17.Day2.checksumInput;
@@ -38,5 +39,10 @@ public class Day2Test {
     @Test
     public void testChecksumForEvenlyDivisible() {
         assertThat(checksumInput(MATRIX, Day2::evenlyDivisible), equalTo(308));
+    }
+
+    @Test(expectedExceptions = UnexpectedOutcomeException.class)
+    public void testUnexpectedNonEvenlyDivisibleList() {
+        checksumInput(Collections.singletonList("2 3"), Day2::evenlyDivisible);
     }
 }
