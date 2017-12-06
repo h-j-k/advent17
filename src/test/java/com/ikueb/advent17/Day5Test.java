@@ -2,6 +2,9 @@ package com.ikueb.advent17;
 
 import org.testng.annotations.Test;
 
+import java.util.function.IntUnaryOperator;
+import java.util.function.Supplier;
+
 import static com.ikueb.advent17.Day5.getSteps;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -9,16 +12,22 @@ import static org.hamcrest.Matchers.equalTo;
 public class Day5Test {
 
     @Test
-    public void testExample() {
-        assertThat(getSteps(0, 3, 0, 1, -3), equalTo(5));
+    public void testPartOne() {
+        IntUnaryOperator op = i -> i + 1;
+        assertThat(getSteps(op, EXAMPLE.get()), equalTo(5));
+        assertThat(getSteps(op, INSTRUCTIONS.get()), equalTo(360603));
     }
 
     @Test
-    public void testPartOne() {
-        assertThat(getSteps(INSTRUCTIONS), equalTo(360603));
+    public void testPartTwo() {
+        IntUnaryOperator op = i -> i >= 3 ? i - 1 : i + 1;
+        assertThat(getSteps(op, EXAMPLE.get()), equalTo(10));
+        assertThat(getSteps(op, INSTRUCTIONS.get()), equalTo(25347697));
     }
 
-    private static final int[] INSTRUCTIONS = {
+    private static final Supplier<int[]> EXAMPLE = () -> new int[]{0, 3, 0, 1, -3};
+
+    private static final Supplier<int[]> INSTRUCTIONS = () -> new int[]{
             2,
             2,
             1,
