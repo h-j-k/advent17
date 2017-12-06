@@ -8,12 +8,15 @@ class Day5 {
         // empty
     }
 
+    static int getSteps(int... instructions) {
+        return getSteps(i -> i + 1, instructions);
+    }
+
     static int getSteps(IntUnaryOperator op, int... instructions) {
         int counter = 0;
-        for (int i = 0; i < instructions.length; counter++) {
-            int jump = instructions[i];
+        for (int i = 0, j; i < instructions.length; i += j, counter++) {
+            j = instructions[i];
             instructions[i] = op.applyAsInt(instructions[i]);
-            i += jump;
         }
         return counter;
     }

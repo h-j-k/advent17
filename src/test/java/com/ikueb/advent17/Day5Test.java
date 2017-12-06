@@ -13,9 +13,8 @@ public class Day5Test {
 
     @Test
     public void testPartOne() {
-        IntUnaryOperator op = i -> i + 1;
-        assertThat(getSteps(op, EXAMPLE.get()), equalTo(5));
-        assertThat(getSteps(op, INSTRUCTIONS.get()), equalTo(360603));
+        assertThat(getSteps(EXAMPLE.get()), equalTo(5));
+        assertThat(getSteps(INSTRUCTIONS.get()), equalTo(360603));
     }
 
     @Test
