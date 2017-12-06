@@ -10,12 +10,12 @@ public class Day5Test {
 
     @Test
     public void testExample() {
-        assertThat(getSteps(0, 3, 0, 1, 3), equalTo(5));
+        assertThat(getSteps(0, 3, 0, 1, -3), equalTo(5));
     }
 
     @Test
     public void testPartOne() {
-        assertThat(getSteps(INSTRUCTIONS), equalTo(0));
+        assertThat(getSteps(INSTRUCTIONS), equalTo(360603));
     }
 
     private static final int[] INSTRUCTIONS = {
