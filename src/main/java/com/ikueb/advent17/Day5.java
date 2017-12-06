@@ -14,11 +14,11 @@ class Day5 {
     }
 
     static int getSteps(IntUnaryOperator op, int... inputs) {
-        int[] instructions = Arrays.copyOf(inputs, inputs.length);
+        int[] x = Arrays.copyOf(inputs, inputs.length);
         int counter = 0;
-        for (int i = 0, j; i < instructions.length; i += j, counter++) {
-            j = instructions[i];
-            instructions[i] = op.applyAsInt(instructions[i]);
+        for (int i = 0, j; i < x.length;
+             j = x[i], x[i] = op.applyAsInt(x[i]), i += j) {
+            counter++;
         }
         return counter;
     }
