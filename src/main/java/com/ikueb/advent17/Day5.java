@@ -3,7 +3,7 @@ package com.ikueb.advent17;
 import java.util.Arrays;
 import java.util.function.IntUnaryOperator;
 
-class Day5 {
+final class Day5 {
 
     private Day5() {
         // empty
