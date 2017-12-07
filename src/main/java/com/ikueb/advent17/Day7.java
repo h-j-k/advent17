@@ -27,8 +27,27 @@ final class Day7 {
 
     static int getCorrectedWeight(Collection<String> programs) {
         Map<String, Program> map = generateMap(programs);
-        String bottom = getBottomProgram(map);
-        return -1;
+        return getCorrectedWeight(0, map.get(getBottomProgram(map)));
+    }
+
+    private static int getCorrectedWeight(int delta, Program parent) {
+        Map<Integer, Set<Program>> childrenWeight =
+                parent.getChildrenWeight().entrySet().stream()
+                        .collect(Collectors.groupingBy(
+                                Map.Entry::getValue,
+                                Collectors.mapping(
+                                        Map.Entry::getKey,
+                                        Collectors.toSet())));
+        if (childrenWeight.size() == 1) {
+            return parent.getWeight() - delta;
+        }
+        IntSummaryStatistics stats = childrenWeight.keySet().stream()
+                .collect(Collectors.summarizingInt(Integer::intValue));
+        return getCorrectedWeight(stats.getMax() - stats.getMin(),
+                childrenWeight.values().stream()
+                        .filter(set -> set.size() == 1)
+                        .flatMap(Set::stream)
+                        .iterator().next());
     }
 
     private static Map<String, Program> generateMap(Collection<String> programs) {
@@ -41,10 +60,9 @@ final class Day7 {
 
     private static final class Program {
 
-        private static final Pattern LINE_PARSER =
-                Pattern.compile("(?<name>[a-z]+) \\((?<weight>\\d+)\\)( -> (?<children>.+))?");
-        private static final Pattern CHILDREN_PARSER =
-                Pattern.compile(", ");
+        private static final Pattern LINE_PARSER = Pattern.compile(
+                "(?<name>[a-z]+) \\((?<weight>\\d+)\\)( -> (?<children>.+))?");
+        private static final Pattern CHILDREN_PARSER = Pattern.compile(", ");
 
         private Program parent = null;
         private final String name;
@@ -78,12 +96,16 @@ final class Day7 {
         }
 
         int getTotalWeight() {
-            return weight + children.stream().mapToInt(Program::getTotalWeight).sum();
+            return weight + children.stream()
+                    .mapToInt(Program::getTotalWeight)
+                    .sum();
         }
 
         Map<Program, Integer> getChildrenWeight() {
             return children.stream()
-                    .collect(Collectors.toMap(Function.identity(), Program::getTotalWeight));
+                    .collect(Collectors.toMap(
+                            Function.identity(),
+                            Program::getTotalWeight));
         }
 
         static Program parse(String line) {

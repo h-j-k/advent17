@@ -21,7 +21,7 @@ public class Day7Test {
     @Test
     public void testCorrectedWeight() {
         assertThat(getCorrectedWeight(EXAMPLE), equalTo(60));
-        assertThat(getCorrectedWeight(INPUTS), equalTo(0));
+        assertThat(getCorrectedWeight(INPUTS), equalTo(802));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(
