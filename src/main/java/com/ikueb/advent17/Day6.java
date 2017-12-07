@@ -1,8 +1,6 @@
 package com.ikueb.advent17;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
@@ -12,15 +10,28 @@ final class Day6 {
         // empty
     }
 
-    static int getUniqueRedistribution(int... banks) {
-        int counter = 0;
+    static int getFirstDuplicateCount(int... banks) {
+        return first(getDuplicateCount(new BanksWrapper(banks)).values());
+    }
+
+    static int getSecondDuplicateCount(int... banks) {
+        return first(getDuplicateCount(
+                first(getDuplicateCount(new BanksWrapper(banks)).keySet())).values());
+    }
+
+    private static Map<BanksWrapper, Integer> getDuplicateCount(BanksWrapper banksWrapper) {
         Set<BanksWrapper> seen = new HashSet<>();
-        for (BanksWrapper current = new BanksWrapper(banks);
-             seen.add(current);
-             current = current.reallocate()) {
+        BanksWrapper current = banksWrapper;
+        int counter = 0;
+        while (seen.add(current)) {
             counter++;
+            current = current.reallocate();
         }
-        return counter;
+        return Collections.singletonMap(current, counter);
+    }
+
+    private static <T> T first(Collection<T> collection) {
+        return collection.iterator().next();
     }
 
     private static final class BanksWrapper {
