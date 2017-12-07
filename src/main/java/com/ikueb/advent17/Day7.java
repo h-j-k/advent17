@@ -42,12 +42,14 @@ final class Day7 {
         }
         IntSummaryStatistics stats = childrenWeight.keySet().stream()
                 .collect(Collectors.summarizingInt(Integer::intValue));
-        return getCorrectedWeight(stats.getMax() - stats.getMin(),
-                childrenWeight.values().stream()
-                        .filter(set -> set.size() == 1)
-                        .flatMap(Set::stream)
-                        .iterator()
-                        .next());
+        Map.Entry<Integer, Set<Program>> unbalanced = childrenWeight.entrySet().stream()
+                .filter(entry -> entry.getValue().size() == 1)
+                .iterator()
+                .next();
+        int newDelta = unbalanced.getKey() == stats.getMin()
+                ? stats.getMin() - stats.getMax()
+                : stats.getMax() - stats.getMin();
+        return getCorrectedWeight(newDelta, unbalanced.getValue().iterator().next());
     }
 
     private static Map<String, Program> generateMap(Collection<String> programs) {

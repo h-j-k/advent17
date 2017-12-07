@@ -20,9 +20,26 @@ public class Day7Test {
 
     @Test
     public void testCorrectedWeight() {
+        assertThat(getCorrectedWeight(CUSTOM), equalTo(60));
         assertThat(getCorrectedWeight(EXAMPLE), equalTo(60));
         assertThat(getCorrectedWeight(INPUTS), equalTo(802));
     }
+
+    private static final List<String> CUSTOM = Arrays.asList(
+            "pbga (66)",
+            "xhth (57)",
+            "ebii (61)",
+            "havc (66)",
+            "ktlj (57)",
+            "fwft (72) -> ktlj, cntj, xhth",
+            "qoyq (66)",
+            "padx (45) -> pbga, havc, qoyq",
+            "tknk (41) -> ugml, padx, fwft",
+            "jptl (61)",
+            "ugml (52) -> gyxo, ebii, jptl",
+            "gyxo (61)",
+            "cntj (57)"
+    );
 
     private static final List<String> EXAMPLE = Arrays.asList(
             "pbga (66)",
