@@ -111,7 +111,7 @@ final class Day7 {
         static Program parse(String line) {
             Matcher matcher = LINE_PARSER.matcher(line);
             if (!matcher.matches()) {
-                throw new UnexpectedOutcomeException("Unable to parse: " + line);
+                throw new UnexpectedException("Unable to parse: " + line);
             }
             return new Program(
                     matcher.group("name"),

@@ -41,7 +41,7 @@ public class Day2Test {
         assertThat(checksumInput(MATRIX, Day2::evenlyDivisible), equalTo(308));
     }
 
-    @Test(expectedExceptions = UnexpectedOutcomeException.class)
+    @Test(expectedExceptions = UnexpectedException.class)
     public void testUnexpectedNonEvenlyDivisibleList() {
         checksumInput(Collections.singletonList("2 3"), Day2::evenlyDivisible);
     }

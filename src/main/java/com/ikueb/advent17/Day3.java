@@ -66,7 +66,7 @@ final class Day3 {
                     return values()[i];
                 }
             }
-            throw new UnexpectedOutcomeException("Expecting a result");
+            throw new UnexpectedException("Expecting a result");
         }
 
         boolean isCorner() {
