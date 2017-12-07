@@ -1,6 +1,9 @@
 package com.ikueb.advent17;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
@@ -11,34 +14,48 @@ final class Day6 {
     }
 
     static int getFirstDuplicateCount(int... banks) {
-        return first(getDuplicateCount(new BanksWrapper(banks)).values());
+        return DuplicateCountResult.get(new BanksWrapper(banks)).getResult();
     }
 
     static int getSecondDuplicateCount(int... banks) {
-        return first(getDuplicateCount(
-                first(getDuplicateCount(new BanksWrapper(banks)).keySet())).values());
+        return DuplicateCountResult.get(
+                DuplicateCountResult.get(new BanksWrapper(banks)).getBanksWrapper()).getResult();
     }
 
-    private static Map<BanksWrapper, Integer> getDuplicateCount(BanksWrapper banksWrapper) {
-        Set<BanksWrapper> seen = new HashSet<>();
-        BanksWrapper current = banksWrapper;
-        int counter = 0;
-        while (seen.add(current)) {
-            counter++;
-            current = current.reallocate();
+    private static final class DuplicateCountResult {
+        private final BanksWrapper banksWrapper;
+        private final int result;
+
+        private DuplicateCountResult(BanksWrapper banksWrapper, int result) {
+            this.banksWrapper = banksWrapper;
+            this.result = result;
         }
-        return Collections.singletonMap(current, counter);
-    }
 
-    private static <T> T first(Collection<T> collection) {
-        return collection.iterator().next();
+        BanksWrapper getBanksWrapper() {
+            return banksWrapper;
+        }
+
+        int getResult() {
+            return result;
+        }
+
+        static DuplicateCountResult get(BanksWrapper banksWrapper) {
+            Set<BanksWrapper> seen = new HashSet<>();
+            BanksWrapper current = banksWrapper;
+            int counter = 0;
+            while (seen.add(current)) {
+                counter++;
+                current = current.reallocate();
+            }
+            return new DuplicateCountResult(current, counter);
+        }
     }
 
     private static final class BanksWrapper {
 
         private final int[] banks;
 
-        BanksWrapper(int[] banks) {
+        private BanksWrapper(int[] banks) {
             this.banks = Arrays.copyOf(banks, banks.length);
         }
 
