@@ -13,16 +13,30 @@ final class Day7 {
     }
 
     static String getBottomProgram(Collection<String> programs) {
-        Map<String, Program> map = programs.stream()
-                .map(Program::parse)
-                .collect(Collectors.toMap(Program::getName, Function.identity()));
-        map.values().forEach(p -> p.setChildren(map));
+        return getBottomProgram(generateMap(programs));
+    }
+
+    private static String getBottomProgram(Map<String, Program> map) {
         return map.entrySet().stream()
                 .filter(entry -> !entry.getValue().hasParent())
                 .findAny()
                 .map(Map.Entry::getKey)
                 .orElseThrow(
                         () -> new UnexpectedOutcomeException("Should find a parent"));
+    }
+
+    static int getCorrectedWeight(Collection<String> programs) {
+        Map<String, Program> map = generateMap(programs);
+        String bottom = getBottomProgram(map);
+        return -1;
+    }
+
+    private static Map<String, Program> generateMap(Collection<String> programs) {
+        Map<String, Program> map = programs.stream()
+                .map(Program::parse)
+                .collect(Collectors.toMap(Program::getName, Function.identity()));
+        map.values().forEach(p -> p.setChildren(map));
+        return map;
     }
 
     private static final class Program {
@@ -59,6 +73,19 @@ final class Day7 {
             return parent != null;
         }
 
+        int getWeight() {
+            return weight;
+        }
+
+        int getTotalWeight() {
+            return weight + children.stream().mapToInt(Program::getTotalWeight).sum();
+        }
+
+        Map<Program, Integer> getChildrenWeight() {
+            return children.stream()
+                    .collect(Collectors.toMap(Function.identity(), Program::getTotalWeight));
+        }
+
         static Program parse(String line) {
             Matcher matcher = LINE_PARSER.matcher(line);
             if (!matcher.matches()) {
@@ -69,7 +96,8 @@ final class Day7 {
                     Integer.parseInt(matcher.group("weight")),
                     CHILDREN_PARSER.splitAsStream(
                             Objects.toString(matcher.group("children"), ""))
-                            .collect(Collectors.toSet()));
+                            .collect(Collectors.collectingAndThen(Collectors.toSet(),
+                                    Collections::unmodifiableSet)));
         }
     }
 }

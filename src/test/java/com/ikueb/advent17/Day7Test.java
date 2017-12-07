@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.ikueb.advent17.Day7.getBottomProgram;
+import static com.ikueb.advent17.Day7.getCorrectedWeight;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -15,6 +16,12 @@ public class Day7Test {
     public void testBottomProgram() {
         assertThat(getBottomProgram(EXAMPLE), equalTo("tknk"));
         assertThat(getBottomProgram(INPUTS), equalTo("ahnofa"));
+    }
+
+    @Test
+    public void testCorrectedWeight() {
+        assertThat(getCorrectedWeight(EXAMPLE), equalTo(60));
+        assertThat(getCorrectedWeight(INPUTS), equalTo(0));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(
