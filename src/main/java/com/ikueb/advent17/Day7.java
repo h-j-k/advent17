@@ -19,10 +19,9 @@ final class Day7 {
     private static String getBottomProgram(Map<String, Program> map) {
         return map.entrySet().stream()
                 .filter(entry -> !entry.getValue().hasParent())
-                .findAny()
                 .map(Map.Entry::getKey)
-                .orElseThrow(
-                        () -> new UnexpectedOutcomeException("Should find a parent"));
+                .iterator()
+                .next();
     }
 
     static int getCorrectedWeight(Collection<String> programs) {
@@ -47,7 +46,8 @@ final class Day7 {
                 childrenWeight.values().stream()
                         .filter(set -> set.size() == 1)
                         .flatMap(Set::stream)
-                        .iterator().next());
+                        .iterator()
+                        .next());
     }
 
     private static Map<String, Program> generateMap(Collection<String> programs) {
