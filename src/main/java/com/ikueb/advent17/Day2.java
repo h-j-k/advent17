@@ -1,8 +1,8 @@
 package com.ikueb.advent17;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.IntSummaryStatistics;
-import java.util.List;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ final class Day2 {
         // empty
     }
 
-    static int checksumInput(List<String> input,
+    static int checksumInput(Collection<String> input,
                              ToIntFunction<int[]> function) {
         return checksum(input.stream()
                 .map(Pattern.compile("\\s+")::splitAsStream)
@@ -21,7 +21,7 @@ final class Day2 {
                 .collect(Collectors.toList()), function);
     }
 
-    private static int checksum(List<int[]> matrix,
+    private static int checksum(Collection<int[]> matrix,
                                 ToIntFunction<int[]> function) {
         return matrix.stream()
                 .mapToInt(function)
