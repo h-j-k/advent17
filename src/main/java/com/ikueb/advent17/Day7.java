@@ -37,7 +37,7 @@ final class Day7 {
                                 Collectors.mapping(
                                         Map.Entry::getKey,
                                         Collectors.toSet())));
-        if (childrenWeight.size() == 1) {
+        if (childrenWeight.size() < 2) {
             return parent.getWeight() - delta;
         }
         IntSummaryStatistics stats = childrenWeight.keySet().stream()

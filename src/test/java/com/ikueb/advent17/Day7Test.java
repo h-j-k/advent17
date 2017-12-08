@@ -20,12 +20,21 @@ public class Day7Test {
 
     @Test
     public void testCorrectedWeight() {
-        assertThat(getCorrectedWeight(CUSTOM), equalTo(60));
         assertThat(getCorrectedWeight(EXAMPLE), equalTo(60));
         assertThat(getCorrectedWeight(INPUTS), equalTo(802));
     }
 
-    private static final List<String> CUSTOM = Arrays.asList(
+    @Test
+    public void testCorrectedWeightForLighterProgram() {
+        assertThat(getCorrectedWeight(LIGHTER_PROGRAM), equalTo(60));
+    }
+
+    @Test
+    public void testCorrectedWeightForChildren() {
+        assertThat(getCorrectedWeight(CHILDREN), equalTo(61));
+    }
+
+    private static final List<String> LIGHTER_PROGRAM = Arrays.asList(
             "pbga (66)",
             "xhth (57)",
             "ebii (61)",
@@ -37,6 +46,22 @@ public class Day7Test {
             "tknk (41) -> ugml, padx, fwft",
             "jptl (61)",
             "ugml (52) -> gyxo, ebii, jptl",
+            "gyxo (61)",
+            "cntj (57)"
+    );
+
+    private static final List<String> CHILDREN = Arrays.asList(
+            "pbga (66)",
+            "xhth (57)",
+            "ebii (69)",
+            "havc (66)",
+            "ktlj (57)",
+            "fwft (72) -> ktlj, cntj, xhth",
+            "qoyq (66)",
+            "padx (45) -> pbga, havc, qoyq",
+            "tknk (41) -> ugml, padx, fwft",
+            "jptl (61)",
+            "ugml (60) -> gyxo, ebii, jptl",
             "gyxo (61)",
             "cntj (57)"
     );
