@@ -60,7 +60,7 @@ final class Day7 {
         return map;
     }
 
-    private static final class Program {
+    static final class Program {
 
         private static final Pattern LINE_PARSER = Pattern.compile(
                 "(?<name>[a-z]+) \\((?<weight>\\d+)\\)( -> (?<children>.+))?");

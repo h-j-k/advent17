@@ -1,9 +1,15 @@
 package com.ikueb.advent17;
 
+import com.ikueb.advent17.Day7.Program;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.ikueb.advent17.Day7.getBottomProgram;
 import static com.ikueb.advent17.Day7.getCorrectedWeight;
@@ -25,13 +31,44 @@ public class Day7Test {
     }
 
     @Test
-    public void testCorrectedWeightForLighterProgram() {
+    public void testCorrectedWeightForLighterProgramAndChildren() {
         assertThat(getCorrectedWeight(LIGHTER_PROGRAM), equalTo(60));
+        assertThat(getCorrectedWeight(CHILDREN), equalTo(61));
     }
 
     @Test
-    public void testCorrectedWeightForChildren() {
-        assertThat(getCorrectedWeight(CHILDREN), equalTo(61));
+    public void testLineParsing() {
+        Program parent = Program.parse("parent (2) -> child");
+        assertProgram(parent, "parent", 2, 2, false, Collections.emptyMap());
+        Program child = Program.parse("child (1)");
+        assertProgram(child, "child", 1, 1, false, Collections.emptyMap());
+        Map<String, Program> map = Stream.of(parent, child)
+                .collect(Collectors.toMap(Program::getName, Function.identity()));
+        parent.setChildren(map);
+        assertProgram(parent, "parent", 2, 3, false, Collections.singletonMap(child, 1));
+        assertProgram(child, "child", 1, 1, true, Collections.emptyMap());
+        child.setChildren(map);
+        assertProgram(child, "child", 1, 1, true, Collections.emptyMap());
+
+    }
+
+    private static void assertProgram(Program program,
+                                      String name,
+                                      int weight,
+                                      int totalWeight,
+                                      boolean hasParent,
+                                      Map<Program, Integer> childrenWeight) {
+        assertThat(program.getName(), equalTo(name));
+        assertThat(program.getWeight(), equalTo(weight));
+        assertThat(program.getTotalWeight(), equalTo(totalWeight));
+        assertThat(program.hasParent(), equalTo(hasParent));
+        assertThat(program.getChildrenWeight(), equalTo(childrenWeight));
+    }
+
+    @Test(expectedExceptions = UnexpectedException.class,
+            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+    public void testUnableToParseMalformedLine() {
+        Program.parse("malformed_line");
     }
 
     private static final List<String> LIGHTER_PROGRAM = Arrays.asList(
