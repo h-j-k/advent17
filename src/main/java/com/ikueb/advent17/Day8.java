@@ -1,12 +1,10 @@
 package com.ikueb.advent17;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -16,7 +14,7 @@ class Day8 {
             "(?<reg>[a-z]+) (?<regOp>(inc|dec)) (?<regVal>[0-9-]+)";
 
     private static final String COND =
-            "(?<cond>[a-z]+) (?<condOp>(<|>|<=|>=|==|!==)) (?<condVal>[0-9-]+)";
+            "(?<cond>[a-z]+) (?<condOp>(<|>|<=|>=|==|!=)) (?<condVal>[0-9-]+)";
 
     private static final Pattern PARSER = Pattern.compile(REGISTER + " if " + COND);
 
@@ -24,8 +22,26 @@ class Day8 {
         // empty
     }
 
-    static int getLargestRegister(List<String> inputs) {
-        return -1;
+    static int getLargestRegister(List<String> instructions) {
+        Map<String, Integer> registers = new HashMap<>();
+        instructions.stream()
+                .map(PARSER::matcher)
+                .filter(Matcher::matches)
+                .forEach(i -> {
+                    Integer cond = registers.computeIfAbsent(i.group("cond"), k -> 0);
+                    ConditionOp condOp = ConditionOp.parse(i.group("condOp"));
+                    Integer condVal = Integer.valueOf(i.group("condVal"));
+                    if (condOp.test(cond, condVal)) {
+                        String reg = i.group("reg");
+                        RegisterOp regOp = RegisterOp.parse(i.group("regOp"));
+                        int regVal = Integer.parseInt(i.group("regVal"));
+                        registers.compute(reg, (k, v) -> regOp.applyAsInt(v == null ? 0 : v, regVal));
+                    }
+                });
+        return registers.values().stream()
+                .mapToInt(Integer::intValue)
+                .max()
+                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
     }
 
     private enum RegisterOp implements IntBinaryOperator {
