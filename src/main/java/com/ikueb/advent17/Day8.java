@@ -2,6 +2,7 @@ package com.ikueb.advent17;
 
 import java.util.*;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
 import java.util.regex.Matcher;
@@ -23,6 +24,24 @@ class Day8 {
     }
 
     static int getLargestRegister(List<String> instructions) {
+        return process(instructions, value -> { /* */ }).values().stream()
+                .mapToInt(Integer::intValue)
+                .max()
+                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
+    }
+
+    static int getLargestRegisterEver(List<String> instructions) {
+        int[] result = {Integer.MIN_VALUE};
+        process(instructions, value -> {
+            if (value > result[0]) {
+                result[0] = value;
+            }
+        });
+        return result[0];
+    }
+
+    private static Map<String, Integer> process(List<String> instructions,
+                                                Consumer<Integer> consumer) {
         Map<String, Integer> registers = new HashMap<>();
         instructions.stream()
                 .map(PARSER::matcher)
@@ -35,13 +54,11 @@ class Day8 {
                         String reg = i.group("reg");
                         RegisterOp regOp = RegisterOp.parse(i.group("regOp"));
                         int regVal = Integer.parseInt(i.group("regVal"));
-                        registers.compute(reg, (k, v) -> regOp.applyAsInt(v == null ? 0 : v, regVal));
+                        consumer.accept(registers.compute(reg, (k, v) ->
+                                regOp.applyAsInt(v == null ? 0 : v, regVal)));
                     }
                 });
-        return registers.values().stream()
-                .mapToInt(Integer::intValue)
-                .max()
-                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
+        return registers;
     }
 
     private enum RegisterOp implements IntBinaryOperator {
