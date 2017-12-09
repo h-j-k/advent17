@@ -9,13 +9,29 @@ final class Day9 {
     static int getGroupCount(String input) {
         int result = 0;
         int level = 0;
+        boolean isGarbageMode = false;
+        boolean isNegationMode = false;
         for (char current : input.toCharArray()) {
-            if (current == '{') {
-                level++;
-            } else if (current == '}') {
-                result += level;
-                level--;
+            if (current == '!' && !isNegationMode) {
+                isNegationMode = true;
+                continue;
             }
+            if (!isNegationMode) {
+                if (current == '<') {
+                    isGarbageMode = true;
+                } else if (current == '>') {
+                    isGarbageMode = false;
+                }
+            }
+            if (!isGarbageMode) {
+                if (current == '{') {
+                    level++;
+                } else if (current == '}') {
+                    result += level;
+                    level--;
+                }
+            }
+            isNegationMode = false;
         }
         return result;
     }
