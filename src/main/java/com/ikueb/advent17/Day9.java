@@ -7,6 +7,16 @@ final class Day9 {
     }
 
     static int getGroupCount(String input) {
-        return -1;
+        int result = 0;
+        int level = 0;
+        for (char current : input.toCharArray()) {
+            if (current == '{') {
+                level++;
+            } else if (current == '}') {
+                result += level;
+                level--;
+            }
+        }
+        return result;
     }
 }
