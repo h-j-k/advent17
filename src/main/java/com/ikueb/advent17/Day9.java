@@ -6,8 +6,8 @@ final class Day9 {
         // empty
     }
 
-    static int getGroupCount(String input) {
-        int result = 0;
+    static Result process(String input) {
+        Result result = new Result();
         int level = 0;
         boolean isGarbageMode = false;
         boolean isNegationMode = false;
@@ -18,6 +18,9 @@ final class Day9 {
             }
             if (!isNegationMode) {
                 if (current == '<') {
+                    if (isGarbageMode) {
+                        result.incrementGarbage();
+                    }
                     isGarbageMode = true;
                     continue;
                 } else if (current == '>') {
@@ -29,12 +32,36 @@ final class Day9 {
                 if (current == '{') {
                     level++;
                 } else if (current == '}') {
-                    result += level;
+                    result.addGroup(level);
                     level--;
                 }
+            }
+            if (isGarbageMode && !isNegationMode) {
+                result.incrementGarbage();
             }
             isNegationMode = false;
         }
         return result;
+    }
+
+    static final class Result {
+        private int groupCount = 0;
+        private int garbageCount = 0;
+
+        void addGroup(int value) {
+            groupCount += value;
+        }
+
+        void incrementGarbage() {
+            garbageCount++;
+        }
+
+        int getGroupCount() {
+            return groupCount;
+        }
+
+        int getGarbageCount() {
+            return garbageCount;
+        }
     }
 }
