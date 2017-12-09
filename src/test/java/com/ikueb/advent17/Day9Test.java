@@ -23,7 +23,7 @@ public class Day9Test {
                 with("{{<ab>},{<ab>},{<ab>},{<ab>}}", 9),
                 with("{{<!!>},{<!!>},{<!!>},{<!!>}}", 9),
                 with("{{<a!>},{<a!>},{<a!>},{<ab>}}", 3),
-                with(INPUT, -1)
+                with(INPUT, 13154)
         ).iterator();
     }
 

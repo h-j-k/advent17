@@ -19,8 +19,10 @@ final class Day9 {
             if (!isNegationMode) {
                 if (current == '<') {
                     isGarbageMode = true;
+                    continue;
                 } else if (current == '>') {
                     isGarbageMode = false;
+                    continue;
                 }
             }
             if (!isGarbageMode) {
