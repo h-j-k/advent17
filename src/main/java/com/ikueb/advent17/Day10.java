@@ -45,10 +45,10 @@ final class Day10 {
         int skip = payload.getSkip();
         int listSize = input.length;
         IntBinaryOperator index = (a, b) -> a + b - listSize * ((a + b) / listSize);
-        for (int i = 0, current;
+        for (int i = 0, current = lengths[i];
              i < lengths.length;
-             i++, start = index.applyAsInt(start, current + skip), skip++) {
-            current = lengths[i];
+             i++, start = index.applyAsInt(start, current + skip), skip++,
+                     current = lengths[i == lengths.length ? 0 : i]) {
             int t = start;
             int[] selection = IntStream.range(0, current)
                     .map(j -> index.applyAsInt(t, j))
