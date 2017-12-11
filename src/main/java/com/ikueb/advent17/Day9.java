@@ -10,27 +10,24 @@ final class Day9 {
         Result result = new Result();
         int level = 0;
         boolean isGarbageMode = false;
-        for (int i = 0; i < input.length(); i++) {
-            char current = input.charAt(i);
+        char current;
+        for (int i = 0; i < input.length(); i += (1 + (current == '!' ? 1 : 0))) {
+            current = input.charAt(i);
             if (current == '!') {
-                i++;
+                continue;
+            }
+            if (isGarbageMode && current != '>') {
+                result.incrementGarbage();
+            } else if (current == '<') {
+                isGarbageMode = true;
+            } else if (current == '>') {
+                isGarbageMode = false;
             } else {
-                if (current == '<') {
-                    if (isGarbageMode) {
-                        result.incrementGarbage();
-                    }
-                    isGarbageMode = true;
-                } else if (current == '>') {
-                    isGarbageMode = false;
-                } else if (isGarbageMode) {
-                    result.incrementGarbage();
-                } else {
-                    if (current == '{') {
-                        level++;
-                    } else if (current == '}') {
-                        result.addGroup(level);
-                        level--;
-                    }
+                if (current == '{') {
+                    level++;
+                } else if (current == '}') {
+                    result.addGroup(level);
+                    level--;
                 }
             }
         }
