@@ -10,36 +10,29 @@ final class Day9 {
         Result result = new Result();
         int level = 0;
         boolean isGarbageMode = false;
-        boolean isNegationMode = false;
-        for (char current : input.toCharArray()) {
-            if (current == '!' && !isNegationMode) {
-                isNegationMode = true;
-                continue;
-            }
-            if (!isNegationMode) {
+        for (int i = 0; i < input.length(); i++) {
+            char current = input.charAt(i);
+            if (current == '!') {
+                i++;
+            } else {
                 if (current == '<') {
                     if (isGarbageMode) {
                         result.incrementGarbage();
                     }
                     isGarbageMode = true;
-                    continue;
                 } else if (current == '>') {
                     isGarbageMode = false;
-                    continue;
+                } else if (isGarbageMode) {
+                    result.incrementGarbage();
+                } else {
+                    if (current == '{') {
+                        level++;
+                    } else if (current == '}') {
+                        result.addGroup(level);
+                        level--;
+                    }
                 }
             }
-            if (!isGarbageMode) {
-                if (current == '{') {
-                    level++;
-                } else if (current == '}') {
-                    result.addGroup(level);
-                    level--;
-                }
-            }
-            if (isGarbageMode && !isNegationMode) {
-                result.incrementGarbage();
-            }
-            isNegationMode = false;
         }
         return result;
     }
