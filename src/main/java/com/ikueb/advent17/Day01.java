@@ -6,9 +6,9 @@ import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
-final class Day1 {
+final class Day01 {
 
-    private Day1() {
+    private Day01() {
         // empty
     }
 

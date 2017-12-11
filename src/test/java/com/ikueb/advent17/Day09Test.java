@@ -6,11 +6,11 @@ import org.testng.annotations.Test;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import static com.ikueb.advent17.Day9.process;
+import static com.ikueb.advent17.Day09.process;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day9Test {
+public class Day09Test {
 
     @DataProvider(name = "groupCount")
     public Iterator<Object[]> getGroupCounts() {

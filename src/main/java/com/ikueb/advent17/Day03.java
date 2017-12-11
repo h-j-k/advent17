@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-final class Day3 {
+final class Day03 {
 
-    private Day3() {
+    private Day03() {
         // empty
     }
 

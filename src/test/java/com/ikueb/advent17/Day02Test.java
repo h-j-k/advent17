@@ -6,11 +6,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ikueb.advent17.Day2.checksumInput;
+import static com.ikueb.advent17.Day02.checksumInput;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day2Test {
+public class Day02Test {
 
     private static final List<String> MATRIX = Arrays.asList(
             "5048	177	5280	5058	4504	3805	5735	220	4362	1809	1521	230	772	1088	178	1794",
@@ -33,16 +33,16 @@ public class Day2Test {
 
     @Test
     public void testChecksumForDiff() {
-        assertThat(checksumInput(MATRIX, Day2::diff), equalTo(58975));
+        assertThat(checksumInput(MATRIX, Day02::diff), equalTo(58975));
     }
 
     @Test
     public void testChecksumForEvenlyDivisible() {
-        assertThat(checksumInput(MATRIX, Day2::evenlyDivisible), equalTo(308));
+        assertThat(checksumInput(MATRIX, Day02::evenlyDivisible), equalTo(308));
     }
 
     @Test(expectedExceptions = UnexpectedException.class)
     public void testUnexpectedNonEvenlyDivisibleList() {
-        checksumInput(Collections.singletonList("2 3"), Day2::evenlyDivisible);
+        checksumInput(Collections.singletonList("2 3"), Day02::evenlyDivisible);
     }
 }

@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
-final class Day6 {
+final class Day06 {
 
-    private Day6() {
+    private Day06() {
         // empty
     }
 

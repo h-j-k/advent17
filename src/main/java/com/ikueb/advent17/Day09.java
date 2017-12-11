@@ -1,8 +1,8 @@
 package com.ikueb.advent17;
 
-final class Day9 {
+final class Day09 {
 
-    private Day9() {
+    private Day09() {
         // empty
     }
 

@@ -2,12 +2,12 @@ package com.ikueb.advent17;
 
 import org.testng.annotations.Test;
 
-import static com.ikueb.advent17.Day6.getFirstDuplicateCount;
-import static com.ikueb.advent17.Day6.getSecondDuplicateCount;
+import static com.ikueb.advent17.Day06.getFirstDuplicateCount;
+import static com.ikueb.advent17.Day06.getSecondDuplicateCount;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day6Test {
+public class Day06Test {
 
     @Test
     public void testFirstDuplicateCount() {

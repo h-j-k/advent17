@@ -6,12 +6,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ikueb.advent17.Day8.getLargestRegister;
-import static com.ikueb.advent17.Day8.getLargestRegisterEver;
+import static com.ikueb.advent17.Day08.getLargestRegister;
+import static com.ikueb.advent17.Day08.getLargestRegisterEver;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day8Test {
+public class Day08Test {
 
     @Test
     public void testGetLargestRegister() {

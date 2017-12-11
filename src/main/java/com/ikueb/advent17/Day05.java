@@ -3,9 +3,9 @@ package com.ikueb.advent17;
 import java.util.Arrays;
 import java.util.function.IntUnaryOperator;
 
-final class Day5 {
+final class Day05 {
 
-    private Day5() {
+    private Day05() {
         // empty
     }
 

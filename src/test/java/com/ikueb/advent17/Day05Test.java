@@ -4,11 +4,11 @@ import org.testng.annotations.Test;
 
 import java.util.function.IntUnaryOperator;
 
-import static com.ikueb.advent17.Day5.getSteps;
+import static com.ikueb.advent17.Day05.getSteps;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day5Test {
+public class Day05Test {
 
     @Test
     public void testPartOne() {

@@ -6,9 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-final class Day7 {
+final class Day07 {
 
-    private Day7() {
+    private Day07() {
         // empty
     }
 

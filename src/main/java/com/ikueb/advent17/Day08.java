@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-final class Day8 {
+final class Day08 {
 
     private static final String REGISTER =
             "(?<reg>[a-z]+) (?<regOp>(inc|dec)) (?<regVal>[0-9-]+)";
@@ -19,7 +19,7 @@ final class Day8 {
 
     private static final Pattern PARSER = Pattern.compile(REGISTER + " if " + COND);
 
-    private Day8() {
+    private Day08() {
         // empty
     }
 

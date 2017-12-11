@@ -1,6 +1,6 @@
 package com.ikueb.advent17;
 
-import com.ikueb.advent17.Day7.Program;
+import com.ikueb.advent17.Day07.Program;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -11,12 +11,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.ikueb.advent17.Day7.getBottomProgram;
-import static com.ikueb.advent17.Day7.getCorrectedWeight;
+import static com.ikueb.advent17.Day07.getBottomProgram;
+import static com.ikueb.advent17.Day07.getCorrectedWeight;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Day7Test {
+public class Day07Test {
 
     @Test
     public void testBottomProgram() {

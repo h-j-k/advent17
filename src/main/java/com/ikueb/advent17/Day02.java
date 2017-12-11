@@ -7,9 +7,9 @@ import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-final class Day2 {
+final class Day02 {
 
-    private Day2() {
+    private Day02() {
         // empty
     }
 

@@ -6,11 +6,11 @@ import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
-final class Day4 {
+final class Day04 {
 
     private static final Pattern SPLITTER = Pattern.compile("\\s+");
 
-    private Day4() {
+    private Day04() {
         // empty
     }
 
