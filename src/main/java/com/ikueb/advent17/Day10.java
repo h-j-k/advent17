@@ -27,7 +27,7 @@ final class Day10 {
                 .copyResult();
         return IntStream.range(0, 16)
                 .map(i -> IntStream.range(i * 16, (i + 1) * 16)
-                        .mapToObj(j -> result[j])
+                        .map(j -> result[j])
                         .reduce(0, (a, b) -> a ^ b))
                 .mapToObj(i -> String.format("%02x", i))
                 .collect(Collectors.joining(""));
