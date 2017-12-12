@@ -12,31 +12,25 @@ final class Day10 {
     }
 
     static int knotAndMultiplyFirstTwo(int listSize, int[] lengths) {
-        Payload payload = knot(new Payload(listSize), lengths);
-        return payload.copyResult()[0] * payload.copyResult()[1];
+        int[] result = knot(new Payload(listSize), lengths).copyResult();
+        return result[0] * result[1];
     }
 
     static String hash(String value) {
         int[] lengths = IntStream.concat(
                 value.chars(),
                 IntStream.of(17, 31, 73, 47, 23)).toArray();
-        Payload payload = IntStream.range(0, 64).boxed().reduce(
+        int[] result = IntStream.range(0, 64).boxed().reduce(
                 new Payload(256),
                 (r, i) -> knot(r, lengths),
-                (a, b) -> {
-                    throw new UnsupportedOperationException();
-                });
-        int[] result = payload.copyResult();
+                (a, b) -> { throw new UnsupportedOperationException(); })
+                .copyResult();
         return IntStream.range(0, 16)
                 .map(i -> IntStream.range(i * 16, (i + 1) * 16)
                         .mapToObj(j -> result[j])
                         .reduce(0, (a, b) -> a ^ b))
-                .mapToObj(Day10::paddedHex)
+                .mapToObj(i -> String.format("%02x", i))
                 .collect(Collectors.joining(""));
-    }
-
-    private static String paddedHex(int i) {
-        return i < 16 ? "0" + Integer.toHexString(i) : Integer.toHexString(i);
     }
 
     private static Payload knot(Payload payload, int[] lengths) {
@@ -74,7 +68,7 @@ final class Day10 {
         Payload(int start, int skip, int[] result) {
             this.start = start;
             this.skip = skip;
-            this.result = Arrays.copyOf(result, result.length);
+            this.result = result;
         }
 
         int getStart() {
