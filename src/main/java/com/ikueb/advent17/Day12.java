@@ -18,16 +18,11 @@ final class Day12 {
     }
 
     static int getTotalGroupCount(Collection<String> programs) {
-        Set<Integer> seen = new HashSet<>();
         int counter = 0;
         for (Map<Integer, Program> map = generateMap(programs);
              !map.isEmpty();
-             seen.forEach(map::remove)) {
-            seen.clear();
-            seen.addAll(
-                    getTargets(map, map.keySet().iterator().next()).stream()
-                            .map(Program::getId)
-                            .collect(Collectors.toSet()));
+             getTargets(map, map.keySet().iterator().next()).stream()
+                     .map(Program::getId).forEach(map::remove)) {
             counter++;
         }
         return counter;
