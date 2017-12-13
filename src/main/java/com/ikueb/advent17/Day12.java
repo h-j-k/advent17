@@ -14,11 +14,30 @@ final class Day12 {
     }
 
     static int getGroupCount(Collection<String> programs, int groupId) {
-        Map<Integer, Program> map = generateMap(programs);
+        return getTargets(generateMap(programs), groupId).size();
+    }
+
+    static int getTotalGroupCount(Collection<String> programs) {
+        Set<Integer> seen = new HashSet<>();
+        int counter = 0;
+        for (Map<Integer, Program> map = generateMap(programs);
+             !map.isEmpty();
+             seen.forEach(map::remove)) {
+            seen.clear();
+            seen.addAll(
+                    getTargets(map, map.keySet().iterator().next()).stream()
+                            .map(Program::getId)
+                            .collect(Collectors.toSet()));
+            counter++;
+        }
+        return counter;
+    }
+
+    private static Set<Program> getTargets(Map<Integer, Program> map, int groupId) {
         Program target = map.get(groupId);
         Set<Program> seen = new HashSet<>(Collections.singleton(target));
         aggregate(target.streamTargetsExcluding(seen), seen);
-        return seen.size();
+        return seen;
     }
 
     private static Map<Integer, Program> generateMap(Collection<String> programs) {
