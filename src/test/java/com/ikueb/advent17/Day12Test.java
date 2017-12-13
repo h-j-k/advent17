@@ -12,7 +12,6 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class Day12Test {
 
-
     @Test
     public void testGroupCount() {
         assertThat(getGroupCount(EXAMPLE, 0), equalTo(6));

@@ -42,7 +42,6 @@ final class Day12 {
 
         private final int id;
         private final Set<Integer> targetNames;
-        private final Set<Program> others = new HashSet<>();
         private final Set<Program> targets = new HashSet<>();
 
         Program(int id, Set<Integer> targetNames) {
@@ -51,10 +50,7 @@ final class Day12 {
         }
 
         void setTargets(Map<Integer, Program> map) {
-            targetNames.stream().map(map::get).forEach(p -> {
-                p.others.add(this);
-                targets.add(p);
-            });
+            targetNames.stream().map(map::get).forEach(targets::add);
         }
 
         int getId() {
