@@ -37,15 +37,13 @@ final class Day13 {
             this.level = level;
         }
 
-        private Set<Integer> getTimesAtTop() {
-            return IntStream.rangeClosed(0, position)
-                    .filter(i -> level == 1 || i % (2 * (level - 1)) == 0)
-                    .boxed()
-                    .collect(Collectors.toSet());
+        int getSeverity() {
+            return getSeverity(0);
         }
 
-        int getSeverity() {
-            return getTimesAtTop().contains(position) ? position * level : 0;
+        int getSeverity(int delay) {
+            return level == 1 || (delay + position) % (2 * (level - 1)) == 0
+                    ? position * level : 0;
         }
 
         static Layer parse(String layer) {
