@@ -26,7 +26,8 @@ final class Day13 {
                 .map(Layer::parse)
                 .collect(Collectors.toList());
         return IntStream.range(1, MAX_DELAY)
-                .filter(i -> layers.stream().allMatch(v -> v.getSeverityPlusDelay(i) == 0))
+                .filter(i -> layers.stream()
+                        .allMatch(v -> v.getSeverityPlusDelay(i) == 0))
                 .findFirst()
                 .orElseThrow(() -> new UnexpectedException(
                         "Expecting a delay less than " + MAX_DELAY));
