@@ -1,12 +1,9 @@
 package com.ikueb.advent17;
 
 import java.util.BitSet;
-import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 final class Day14 {
-
-    private static final Pattern SPLITTER = Pattern.compile("");
 
     private Day14() {
         // empty
@@ -16,10 +13,15 @@ final class Day14 {
         return IntStream.range(0, 128)
                 .mapToObj(i -> input + "-" + i)
                 .map(Day10::hash)
-                .flatMap(SPLITTER::splitAsStream)
-                .map(v -> new long[]{Long.parseLong(v, 16)})
-                .map(BitSet::valueOf)
+                .map(Day14::asBitSet)
                 .mapToInt(BitSet::cardinality)
                 .sum();
+    }
+
+    private static BitSet asBitSet(String hash) {
+        return BitSet.valueOf(IntStream.range(0, 8)
+                .mapToObj(i -> hash.substring(i * 4, (i + 1) * 4))
+                .mapToLong(v -> Long.parseLong(v, 16))
+                .toArray());
     }
 }
