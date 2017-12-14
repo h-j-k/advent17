@@ -4,8 +4,10 @@ import com.ikueb.advent17.Day13.Layer;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
+import static com.ikueb.advent17.Day13.MAX_DELAY;
 import static com.ikueb.advent17.Day13.getMinimumDelay;
 import static com.ikueb.advent17.Day13.getTripSeverity;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,16 +21,22 @@ public class Day13Test {
         assertThat(getTripSeverity(LEVELS), equalTo(1504));
     }
 
-    @Test(enabled = false)
+    @Test
     public void testMinimumDelay() {
         assertThat(getMinimumDelay(EXAMPLE), equalTo(10));
-        assertThat(getMinimumDelay(LEVELS), equalTo(1504));
+        assertThat(getMinimumDelay(LEVELS), equalTo(3823370));
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
             expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
     public void testUnableToParseMalformedLine() {
         Layer.parse("malformed_line");
+    }
+
+    @Test(expectedExceptions = UnexpectedException.class,
+            expectedExceptionsMessageRegExp = "^Expecting a delay less than " + MAX_DELAY)
+    public void testExpectingADelay() {
+        getMinimumDelay(Arrays.asList("0: 1", "1: 1"));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(
