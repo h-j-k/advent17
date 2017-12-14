@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.ikueb.advent17.Day13.getMinimumDelay;
 import static com.ikueb.advent17.Day13.getTripSeverity;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -16,6 +17,12 @@ public class Day13Test {
     public void testTripSeverity() {
         assertThat(getTripSeverity(EXAMPLE), equalTo(24));
         assertThat(getTripSeverity(LEVELS), equalTo(1504));
+    }
+
+    @Test
+    public void testMinimumDelay() {
+        assertThat(getMinimumDelay(EXAMPLE), equalTo(10));
+        assertThat(getMinimumDelay(LEVELS), equalTo(1504));
     }
 
     @Test(expectedExceptions = UnexpectedException.class,

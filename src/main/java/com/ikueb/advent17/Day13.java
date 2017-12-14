@@ -20,6 +20,10 @@ final class Day13 {
                 .sum();
     }
 
+    static int getMinimumDelay(List<String> levels) {
+        return -1;
+    }
+
     static final class Layer {
 
         private static final Pattern PARSER = Pattern.compile(
