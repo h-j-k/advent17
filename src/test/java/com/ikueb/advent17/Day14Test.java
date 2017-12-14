@@ -11,5 +11,6 @@ public class Day14Test {
     @Test
     public void testUsedSquares() {
         assertThat(usedSquares("flqrgnkx"), equalTo(8108));
+        assertThat(usedSquares("ugkiagan"), equalTo(8292));
     }
 }
