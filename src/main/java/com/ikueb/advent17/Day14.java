@@ -19,7 +19,7 @@ final class Day14 {
 
     static int contiguousRegions(String input) {
         List<BitSet> rows = convert(input);
-        TreeSet<Element> usedSquares = IntStream.range(0, rows.size())
+        SortedSet<Element> usedSquares = IntStream.range(0, rows.size())
                 .boxed()
                 .flatMap(y -> rows.get(y).stream().mapToObj(x -> new Element(x, y)))
                 .collect(Collectors.toCollection(TreeSet::new));
@@ -31,9 +31,9 @@ final class Day14 {
         return counter;
     }
 
-    private static Set<Element> getNextRegion(TreeSet<Element> usedSquares) {
+    private static Set<Element> getNextRegion(SortedSet<Element> usedSquares) {
         return usedSquares.isEmpty() ? Collections.emptySet()
-                : iterate(usedSquares.first(), new TreeSet<>(), usedSquares)
+                : iterate(usedSquares.first(), new HashSet<>(), usedSquares)
                 .collect(Collectors.toSet());
     }
 
@@ -107,18 +107,12 @@ final class Day14 {
 
         @Override
         public boolean equals(Object o) {
-            return o == this || (o instanceof Element
-                    && x == ((Element) o).x && y == ((Element) o).y);
+            return o instanceof Element && x == ((Element) o).x && y == ((Element) o).y;
         }
 
         @Override
         public int hashCode() {
             return Objects.hash(x, y);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("%3d, %3d", x, y);
         }
     }
 }
