@@ -40,11 +40,9 @@ final class Day14 {
     private static Stream<Element> iterate(Element current,
                                            Set<Element> seen,
                                            Set<Element> usedSquares) {
-        Set<Element> selected = current.around()
+        return Stream.concat(Stream.of(current), current.around()
                 .filter(v -> usedSquares.contains(v) && seen.add(v))
-                .collect(Collectors.toSet());
-        return Stream.concat(selected.stream(),
-                selected.stream().flatMap(v -> iterate(v, seen, usedSquares)));
+                .flatMap(v -> iterate(v, seen, usedSquares)));
     }
 
     private static List<BitSet> convert(String input) {
@@ -93,7 +91,7 @@ final class Day14 {
         }
 
         Stream<Element> around() {
-            return Stream.of(this,
+            return Stream.of(
                     new Element(Math.max(x - 1, 0), y),
                     new Element(x, Math.max(y - 1, 0)),
                     new Element(x + 1, y),
