@@ -54,19 +54,9 @@ final class Day14 {
     }
 
     private static BitSet asBitSet(String hash) {
-        BitSet result = new BitSet(128);
-        String binaryString = hash.chars()
-                .mapToObj(c -> Character.toString((char) c))
-                .map(Day14::toBinaryString)
-                .collect(Collectors.joining());
-        IntStream.range(0, binaryString.length())
-                .filter(i -> binaryString.charAt(i) == '1')
-                .forEach(result::set);
-        return result;
-    }
-
-    private static String toBinaryString(String c) {
-        return String.format("%4s", Integer.toBinaryString(Integer.parseInt(c, 16)));
+        return BitSet.valueOf(Stream.of(hash.substring(16), hash.substring(0, 16))
+                .mapToLong(v -> Long.parseUnsignedLong(v, 16))
+                .toArray());
     }
 
     private static final class Element implements Comparable<Element> {

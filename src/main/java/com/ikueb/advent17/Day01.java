@@ -3,7 +3,6 @@ package com.ikueb.advent17;
 import java.util.function.IntBinaryOperator;
 import java.util.function.IntUnaryOperator;
 import java.util.function.ToIntFunction;
-import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 final class Day01 {
@@ -13,10 +12,8 @@ final class Day01 {
     }
 
     static int compute(String value, ToIntFunction<int[]> function) {
-        return function.applyAsInt(Pattern.compile("")
-                .splitAsStream(value)
-                .mapToInt(Integer::parseInt)
-                .toArray());
+        return function.applyAsInt(value.chars()
+                .map(c -> Character.digit((char) c, 10)).toArray());
     }
 
     static int sum(int... values) {
@@ -32,7 +29,6 @@ final class Day01 {
     private static int sum(int end, IntUnaryOperator pair,
                            IntBinaryOperator op, int... values) {
         return IntStream.range(0, end)
-                .map(i -> op.applyAsInt(values[i], values[pair.applyAsInt(i)]))
-                .sum();
+                .map(i -> op.applyAsInt(values[i], values[pair.applyAsInt(i)])).sum();
     }
 }
