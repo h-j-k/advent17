@@ -1,5 +1,7 @@
 package com.ikueb.advent17;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 
@@ -16,6 +18,15 @@ final class Day16 {
                 .reduce(input, (programs, instruction) ->
                         Instruction.get(instruction.charAt(0))
                                 .apply(programs, instruction.substring(1)));
+    }
+
+    static String danceTillDrop(String input, String instructions) {
+        Map<String, String> cache = new HashMap<>();
+        String previous = input;
+        for (int i = 0; i < 1_000_000_000; i++) {
+            previous = cache.computeIfAbsent(previous, k -> dance(k, instructions));
+        }
+        return previous;
     }
 
     private enum Instruction implements BinaryOperator<String> {
