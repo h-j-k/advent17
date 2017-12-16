@@ -10,7 +10,8 @@ public class Day15Test {
 
     @Test
     public void testMatchingLowest16Digits() {
-        assertThat(getMatchingLowest16Digits(65, 8921), equalTo(588));
+        assertThat(getMatchingLowest16Digits(65, 8921), equalTo(588L));
+        assertThat(getMatchingLowest16Digits(699, 124), equalTo(600L));
     }
 
 }
