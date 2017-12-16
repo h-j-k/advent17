@@ -18,7 +18,7 @@ final class Day03 {
                 .map(i -> end - 2 * layer * i)
                 .filter(i -> n >= i || n > i - layer)
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Expecting a result"));
+                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
         return layer + Math.abs(n - chosen);
     }
 
@@ -57,16 +57,14 @@ final class Day03 {
         }
 
         static Place get(int n) {
-            for (int i = 1, t = getLayer(n), diff = 2 * t, max = getLayerMax(t);
-                 i < values().length;
-                 i += 2, max -= diff) {
+            for (int i = 1, t = getLayer(n), diff = 2 * t,
+                 max = getLayerMax(t); ; i += 2, max -= diff) {
                 if (max == n) {
                     return values()[i - 1];
                 } else if (max - diff < n) {
                     return values()[i];
                 }
             }
-            throw new UnexpectedException("Expecting a result");
         }
 
         boolean isCorner() {

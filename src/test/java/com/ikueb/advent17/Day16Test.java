@@ -22,7 +22,7 @@ public class Day16Test {
                 equalTo("hklecbpnjigoafmd"));
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class,
+    @Test(expectedExceptions = UnexpectedException.class,
             expectedExceptionsMessageRegExp = "^Should be one of: sX, xA/B, pA/B$")
     public void testInvalidInstructions() {
         dance("", " ");

@@ -61,7 +61,7 @@ final class Day16 {
                 case 'p':
                     return PARTNER;
                 default:
-                    throw new IllegalArgumentException(
+                    throw new UnexpectedException(
                             "Should be one of: sX, xA/B, pA/B");
             }
         }
