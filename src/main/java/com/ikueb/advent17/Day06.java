@@ -75,8 +75,8 @@ final class Day06 {
 
         @Override
         public boolean equals(Object o) {
-            return this == o || (o instanceof BanksWrapper
-                    && Arrays.equals(banks, ((BanksWrapper) o).banks));
+            return o instanceof BanksWrapper
+                    && Arrays.equals(banks, ((BanksWrapper) o).banks);
         }
 
         @Override

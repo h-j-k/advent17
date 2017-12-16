@@ -19,10 +19,10 @@ final class Day14 {
 
     static int contiguousRegions(String input) {
         List<BitSet> rows = convert(input);
-        SortedSet<Element> usedSquares = IntStream.range(0, rows.size())
+        Set<Element> usedSquares = IntStream.range(0, rows.size())
                 .boxed()
                 .flatMap(y -> rows.get(y).stream().mapToObj(x -> new Element(x, y)))
-                .collect(Collectors.toCollection(TreeSet::new));
+                .collect(Collectors.toSet());
         int counter = 0;
         for (Set<Element> region = getNextRegion(usedSquares); !region.isEmpty();
              usedSquares.removeAll(region), region = getNextRegion(usedSquares)) {
@@ -31,9 +31,9 @@ final class Day14 {
         return counter;
     }
 
-    private static Set<Element> getNextRegion(SortedSet<Element> usedSquares) {
+    private static Set<Element> getNextRegion(Set<Element> usedSquares) {
         return usedSquares.isEmpty() ? Collections.emptySet()
-                : iterate(usedSquares.first(), new HashSet<>(), usedSquares)
+                : iterate(usedSquares.iterator().next(), new HashSet<>(), usedSquares)
                 .collect(Collectors.toSet());
     }
 
@@ -59,10 +59,7 @@ final class Day14 {
                 .toArray());
     }
 
-    private static final class Element implements Comparable<Element> {
-
-        private static final Comparator<Element> COMPARATOR =
-                Comparator.comparing(Element::getY).thenComparing(Element::getX);
+    private static final class Element {
 
         private final int x;
         private final int y;
@@ -72,25 +69,12 @@ final class Day14 {
             this.y = y;
         }
 
-        private int getX() {
-            return x;
-        }
-
-        private int getY() {
-            return y;
-        }
-
         Stream<Element> around() {
             return Stream.of(
                     new Element(Math.max(x - 1, 0), y),
                     new Element(x, Math.max(y - 1, 0)),
                     new Element(x + 1, y),
                     new Element(x, y + 1));
-        }
-
-        @Override
-        public int compareTo(Element o) {
-            return COMPARATOR.compare(this, o);
         }
 
         @Override
