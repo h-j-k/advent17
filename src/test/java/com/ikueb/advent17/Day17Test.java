@@ -11,6 +11,7 @@ public class Day17Test {
     @Test
     public void testGetNextValueAfter2017() {
         assertThat(getNextAfter2017WithSteps(3), equalTo(638));
+        assertThat(getNextAfter2017WithSteps(377), equalTo(596));
     }
 
 }
