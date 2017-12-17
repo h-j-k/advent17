@@ -11,19 +11,28 @@ final class Day17 {
         // empty
     }
 
-    static int getNextAfter2017WithSteps(int steps) {
+    static int getAfter2017For2017(int steps) {
         int[] values = {0};
-        int index = 0;
-        for (int i = 1; i <= 2017; i++) {
-            index += steps + 1;
-            while (index > values.length) {
-                index -= values.length;
-            }
+        for (int i = 1, index = 1; ;
+             i++, index = (index + steps) % i + 1) {
             values = Stream.of(Arrays.stream(values, 0, index),
-                    IntStream.of(i), Arrays.stream(values, index, values.length))
+                    IntStream.of(i), Arrays.stream(values, index, i))
                     .flatMapToInt(Function.identity())
                     .toArray();
+            if (i == 2017) {
+                return values[index + 1];
+            }
         }
-        return values[index + 1];
+    }
+
+    static int getAfter0For50Million(int steps) {
+        int result = 0;
+        for (int i = 1, index = 1; i <= 50_000_000;
+             i++, index = (index + steps) % i + 1) {
+            if (index == 1) {
+                result = i;
+            }
+        }
+        return result;
     }
 }
