@@ -5,6 +5,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.ikueb.advent17.Day18.getSends;
 import static com.ikueb.advent17.Day18.recoverFrequency;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -13,11 +14,17 @@ public class Day18Test {
 
     @Test
     public void testRecoverFrequency() {
-        assertThat(recoverFrequency(EXAMPLE), equalTo(4L));
+        assertThat(recoverFrequency(PART_ONE), equalTo(4L));
         assertThat(recoverFrequency(INSTRUCTIONS), equalTo(9423L));
     }
 
-    private static final List<String> EXAMPLE = Arrays.asList(
+    @Test
+    public void testNumberOfSends() {
+        assertThat(getSends(PART_TWO), equalTo(3));
+        assertThat(getSends(INSTRUCTIONS), equalTo(7620));
+    }
+
+    private static final List<String> PART_ONE = Arrays.asList(
             "set a 1",
             "add a 2",
             "mul a a",
@@ -28,6 +35,16 @@ public class Day18Test {
             "jgz a -1",
             "set a 1",
             "jgz a -2"
+    );
+
+    private static final List<String> PART_TWO = Arrays.asList(
+            "snd 1",
+            "snd 2",
+            "snd p",
+            "rcv a",
+            "rcv b",
+            "rcv c",
+            "rcv d"
     );
 
     private static final List<String> INSTRUCTIONS = Arrays.asList(
