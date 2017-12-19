@@ -27,7 +27,7 @@ final class Day18 {
         }
     }
 
-    static int getSends(List<String> instructions) {
+    static int getNumberOfSends(List<String> instructions) {
         Program zero = new Program(0, instructions);
         Program one = new Program(1, instructions).link(zero);
         return CompletableFuture.allOf(
@@ -63,11 +63,11 @@ final class Day18 {
                 if (result.isSending() && queue.add(result.getValue())) {
                     counter++;
                 } else if (result.isReceiving()) {
-                    Long target;
+                    Long target = null;
                     try {
                         target = otherQueue.poll(TIMEOUT, TimeUnit.SECONDS);
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        Thread.currentThread().interrupt();
                     }
                     if (target == null) {
                         return;
