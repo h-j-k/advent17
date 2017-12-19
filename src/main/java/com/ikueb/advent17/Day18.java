@@ -20,7 +20,7 @@ final class Day18 {
         for (int i = 0; ; i += result.jumpToNextInstruction()) {
             result = Instruction.compute(map, temp.get(i));
             if (result.isPlayed()) {
-                lastPlayed = result.getResult();
+                lastPlayed = result.getValue();
             } else if (result.isRecovered()) {
                 return lastPlayed;
             }
@@ -30,17 +30,15 @@ final class Day18 {
     static int getSends(List<String> instructions) {
         Program zero = new Program(0, instructions);
         Program one = new Program(1, instructions).link(zero);
-        ExecutorService service = Executors.newFixedThreadPool(2);
         return CompletableFuture.allOf(
-                CompletableFuture.runAsync(zero, service),
-                CompletableFuture.runAsync(one, service))
+                CompletableFuture.runAsync(zero),
+                CompletableFuture.runAsync(one))
                 .thenApply(aVoid -> one.getCounter()).join();
     }
 
     private static final class Program implements Runnable {
 
         private static final int TIMEOUT = 3;
-        private final long p;
         private final Map<Character, Long> map;
         private final List<String> temp;
         private final BlockingDeque<Long> queue = new LinkedBlockingDeque<>();
@@ -48,7 +46,6 @@ final class Day18 {
         private int counter = 0;
 
         private Program(long p, List<String> instructions) {
-            this.p = p;
             this.map = new HashMap<>(Collections.singletonMap('p', p));
             this.temp = new ArrayList<>(instructions);
         }
@@ -63,15 +60,14 @@ final class Day18 {
             Result result;
             for (int i = 0; ; i += result.jumpToNextInstruction()) {
                 result = Instruction.compute(map, temp.get(i));
-                if (result.isSending()) {
-                    queue.offer(result.getResult());
+                if (result.isSending() && queue.add(result.getValue())) {
                     counter++;
                 } else if (result.isReceiving()) {
                     Long target;
                     try {
                         target = otherQueue.poll(TIMEOUT, TimeUnit.SECONDS);
                     } catch (InterruptedException e) {
-                        return;
+                        throw new RuntimeException(e);
                     }
                     if (target == null) {
                         return;
@@ -89,21 +85,20 @@ final class Day18 {
     private static final class Result {
         private final Instruction instruction;
         private final char register;
-        private final Long result;
+        private final Long value;
 
-        private Result(Instruction instruction, char register, Long result) {
+        private Result(Instruction instruction, char register, Long value) {
             this.instruction = instruction;
             this.register = register;
-            this.result = result;
+            this.value = value;
         }
 
         char getRegister() {
             return register;
         }
 
-        long getResult() {
-            return Optional.ofNullable(result).orElseThrow(
-                    () -> new UnexpectedException("Expecting a result."));
+        long getValue() {
+            return value;
         }
 
         boolean isPlayed() {
@@ -115,7 +110,7 @@ final class Day18 {
         }
 
         boolean isRecovered() {
-            return instruction == Instruction.RCV && result != null;
+            return instruction == Instruction.RCV && value != null;
         }
 
         boolean isReceiving() {
@@ -123,13 +118,8 @@ final class Day18 {
         }
 
         int jumpToNextInstruction() {
-            return instruction == Instruction.JGZ && result != null
-                    ? result.intValue() : 1;
-        }
-
-        @Override
-        public String toString() {
-            return instruction.name() + " " + register + " " + result;
+            return instruction == Instruction.JGZ && value != null
+                    ? value.intValue() : 1;
         }
     }
 
