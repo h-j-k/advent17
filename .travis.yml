@@ -12,6 +12,7 @@ cache:
   directories:
   - "$HOME/.gradle/caches/"
   - "$HOME/.gradle/wrapper/"
+install: ./gradlew assemble --stacktrace
 deploy:
   provider: pages
   skip_cleanup: true
