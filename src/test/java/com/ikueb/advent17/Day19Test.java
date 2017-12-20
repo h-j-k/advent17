@@ -39,7 +39,7 @@ public class Day19Test {
 
     private static List<String> getInput() {
         try {
-            return Files.readAllLines(Paths.get("out", "test", "resources", "Day19.txt"));
+            return Files.readAllLines(Paths.get("build", "resources", "test", "Day19.txt"));
         } catch (IOException e) {
             throw new UnexpectedException(e.getMessage());
         }
