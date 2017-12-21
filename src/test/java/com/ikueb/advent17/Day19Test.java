@@ -2,28 +2,28 @@ package com.ikueb.advent17;
 
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 import static com.ikueb.advent17.Day19.getPath;
+import static com.ikueb.advent17.Utils.getInput;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class Day19Test {
 
     @Test
-    public void testGetPath() {
-        assertThat(getPath(EXAMPLE).getPath(), equalTo("ABCDEF"));
-        assertThat(getPath(INPUT).getPath(), equalTo("DTOUFARJQ"));
+    public void testExample() {
+        Day19.Result result = getPath(EXAMPLE);
+        assertThat(result.getPath(), equalTo("ABCDEF"));
+        assertThat(result.getNumberOfSteps(), equalTo(38));
     }
 
     @Test
-    public void testGetNumberOfSteps() {
-        assertThat(getPath(EXAMPLE).getNumberOfSteps(), equalTo(38));
-        assertThat(getPath(INPUT).getNumberOfSteps(), equalTo(16642));
+    public void testInput() {
+        Day19.Result result = getPath(getInput(Day19.class));
+        assertThat(result.getPath(), equalTo("DTOUFARJQ"));
+        assertThat(result.getNumberOfSteps(), equalTo(16642));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(
@@ -34,14 +34,4 @@ public class Day19Test {
             "     |  |  |  D ",
             "     +B-+  +--+ "
     );
-
-    private static final List<String> INPUT = getInput();
-
-    private static List<String> getInput() {
-        try {
-            return Files.readAllLines(Paths.get("build", "resources", "test", "Day19.txt"));
-        } catch (IOException e) {
-            throw new UnexpectedException(e.getMessage());
-        }
-    }
 }
