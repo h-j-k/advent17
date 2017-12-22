@@ -25,6 +25,10 @@ final class Day20 {
                 .orElseThrow(() -> new UnexpectedException("Expecting a particle."));
     }
 
+    static int countUncollidedParticles(List<String> input) {
+        return -1;
+    }
+
     static final class Particle {
 
         private static final Pattern PARSER = Pattern.compile(
