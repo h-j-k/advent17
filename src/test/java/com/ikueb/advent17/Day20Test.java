@@ -21,8 +21,14 @@ public class Day20Test {
 
     @Test
     public void testCountUncollidedParticles() {
-        assertThat(countUncollidedParticles(PART_TWO), equalTo(0));
-        assertThat(countUncollidedParticles(INPUT), equalTo(364));
+        assertThat(countUncollidedParticles(PART_TWO), equalTo(1));
+        assertThat(countUncollidedParticles(INPUT), equalTo(420));
+    }
+
+    @Test(expectedExceptions = UnexpectedException.class,
+            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+    public void testUnableToParseMalformedLine() {
+        Day20.Particle.from("malformed_line");
     }
 
     private static final List<String> PART_ONE = Arrays.asList(
@@ -31,10 +37,10 @@ public class Day20Test {
     );
 
     private static final List<String> PART_TWO = Arrays.asList(
-            "p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>",
-            "p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>",
-            "p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>",
-            "p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>"
+            "p=<-6,0,0>, v=<3,0,0>, a=<0,0,0>",
+            "p=<-4,0,0>, v=<2,0,0>, a=<0,0,0>",
+            "p=<-2,0,0>, v=<1,0,0>, a=<0,0,0>",
+            "p=<3,0,0>, v=<-1,0,0>, a=<0,0,0>"
     );
 
     private static final List<String> INPUT = getInput(Day20.class);
