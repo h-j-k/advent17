@@ -50,20 +50,14 @@ final class Day20 {
     }
 
     static final class Position {
-        private final Particle particle;
         private final int x;
         private final int y;
         private final int z;
 
-        Position(Particle particle, int x, int y, int z) {
-            this.particle = particle;
+        Position(int x, int y, int z) {
             this.x = x;
             this.y = y;
             this.z = z;
-        }
-
-        Particle getParticle() {
-            return particle;
         }
 
         @Override
@@ -102,7 +96,7 @@ final class Day20 {
         }
 
         Position positionAt(int t) {
-            return new Position(this,
+            return new Position(
                     positionAt(xPva, t),
                     positionAt(yPva, t),
                     positionAt(zPva, t));
