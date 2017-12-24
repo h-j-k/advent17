@@ -36,6 +36,7 @@ final class Day22 {
 
     private static Node findOrAdd(Set<Node> nodes, int x, int y) {
         Optional<Node> node = nodes.stream()
+                .parallel()
                 .filter(n -> n.x == x && n.y == y)
                 .findFirst();
         if (node.isPresent()) {
@@ -106,12 +107,12 @@ final class Day22 {
         S(x -> x, y -> y - 1),
         W(x -> x - 1, y -> y);
 
-        private final IntUnaryOperator x_op;
-        private final IntUnaryOperator y_op;
+        private final IntUnaryOperator xOp;
+        private final IntUnaryOperator yOp;
 
-        Direction(IntUnaryOperator x_op, IntUnaryOperator y_op) {
-            this.x_op = x_op;
-            this.y_op = y_op;
+        Direction(IntUnaryOperator xOp, IntUnaryOperator yOp) {
+            this.xOp = xOp;
+            this.yOp = yOp;
         }
 
         private static final List<Direction> DIRECTIONS =
@@ -131,11 +132,11 @@ final class Day22 {
         }
 
         int nextX(int x) {
-            return x_op.applyAsInt(x);
+            return xOp.applyAsInt(x);
         }
 
         int nextY(int y) {
-            return y_op.applyAsInt(y);
+            return yOp.applyAsInt(y);
         }
     }
 }
