@@ -43,9 +43,6 @@ final class Day21 {
 
         Area next(List<Rule> rules) {
             int newSize = size % 2 == 0 ? (size / 2) * 3 : (size / 3) * 4;
-            if (newSize == 9) {
-                System.out.println("HEY!");
-            }
             return split()
                     .map(area -> area.convert(rules))
                     .reduce(new Area(newSize), Area::join);

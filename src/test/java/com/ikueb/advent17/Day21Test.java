@@ -16,6 +16,7 @@ public class Day21Test {
     public void testCountPixelsOnAfterIterations() {
         assertThat(countPixelsOnAfterIterations(2, EXAMPLE), equalTo(12L));
         assertThat(countPixelsOnAfterIterations(5, RULES), equalTo(190L));
+        assertThat(countPixelsOnAfterIterations(18, RULES), equalTo(2335049L));
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
