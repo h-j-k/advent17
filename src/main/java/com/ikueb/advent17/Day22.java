@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.IntUnaryOperator;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -14,13 +16,15 @@ final class Day22 {
         // empty
     }
 
-    static int countInfectedNodes(List<String> input, int iterations) {
+    static int countInfectedNodes(List<String> input, int iterations,
+                                  BiFunction<State, Direction, Direction> header,
+                                  UnaryOperator<State> updater) {
         Set<Node> nodes = getNodes(input);
         Direction direction = Direction.N;
         Node current = findOrAdd(nodes, 0, 0);
         int counter = 0;
         for (int i = 0; i < iterations; i++) {
-            Step step = current.getNextStep(direction);
+            Step step = current.getNextStep(direction, header, updater);
             direction = step.direction;
             current = findOrAdd(nodes, step.x, step.y);
             if (step.hasCausedInfection) {
@@ -37,7 +41,7 @@ final class Day22 {
         if (node.isPresent()) {
             return node.get();
         }
-        Node newNode = new Node(x, y, false);
+        Node newNode = new Node(x, y, State.CLEAN);
         nodes.add(newNode);
         return newNode;
     }
@@ -48,7 +52,8 @@ final class Day22 {
                 .boxed()
                 .flatMap(y -> IntStream.rangeClosed(-1 * edge, edge)
                         .mapToObj(x -> new Node(x, 0 - y,
-                                input.get(y + edge).charAt(x + edge) == '#')))
+                                input.get(y + edge).charAt(x + edge) == '#'
+                                        ? State.INFECTED : State.CLEAN)))
                 .collect(Collectors.toSet());
 
     }
@@ -70,22 +75,32 @@ final class Day22 {
     private static final class Node {
         private final int x;
         private final int y;
-        private boolean isInfected;
+        private State state;
 
-        Node(int x, int y, boolean isInfected) {
+        Node(int x, int y, State state) {
             this.x = x;
             this.y = y;
-            this.isInfected = isInfected;
+            this.state = state;
         }
 
-        Step getNextStep(Direction direction) {
-            Direction nextDirection = isInfected ? direction.right() : direction.left();
-            isInfected = !isInfected;
-            return new Step(nextDirection, x, y, isInfected);
+        Step getNextStep(Direction direction,
+                         BiFunction<State, Direction, Direction> header,
+                         UnaryOperator<State> updater) {
+            Direction nextDirection = header.apply(state, direction);
+            state = updater.apply(state);
+            return new Step(nextDirection, x, y, state == State.INFECTED);
         }
     }
 
-    private enum Direction {
+    enum State {
+        CLEAN, WEAKENED, INFECTED, FLAGGED;
+
+        State next() {
+            return values()[ordinal() + 1 == values().length ? 0 : ordinal() + 1];
+        }
+    }
+
+    enum Direction {
         N(x -> x, y -> y + 1),
         E(x -> x + 1, y -> y),
         S(x -> x, y -> y - 1),
@@ -109,6 +124,10 @@ final class Day22 {
 
         Direction left() {
             return DIRECTIONS.get(ordinal() - 1 == -1 ? SIZE - 1 : ordinal() - 1);
+        }
+
+        Direction reverse() {
+            return DIRECTIONS.get((ordinal() + 2) % SIZE);
         }
 
         int nextX(int x) {
