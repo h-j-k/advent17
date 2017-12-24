@@ -19,4 +19,13 @@ final class Utils {
             throw new UnexpectedException(e.getMessage());
         }
     }
+
+    static String getSingleInput(Class clazz) {
+        try {
+            return Files.readAllLines(Paths.get("build", "resources", "test",
+                    clazz.getSimpleName() + ".txt")).iterator().next();
+        } catch (IOException e) {
+            throw new UnexpectedException(e.getMessage());
+        }
+    }
 }
