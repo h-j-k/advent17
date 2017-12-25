@@ -55,6 +55,10 @@ public class Day22Test {
     public void testPartTwo() {
         assertThat(countInfectedNodes(EXAMPLE, 100,
                 PART_TWO_HEADER, PART_TWO_UPDATER), equalTo(26));
+        assertThat(countInfectedNodes(EXAMPLE, 10_000_000,
+                PART_TWO_HEADER, PART_TWO_UPDATER), equalTo(2511944));
+        assertThat(countInfectedNodes(INPUT, 10_000_000,
+                PART_TWO_HEADER, PART_TWO_UPDATER), equalTo(2512135));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(

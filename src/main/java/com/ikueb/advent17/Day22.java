@@ -2,9 +2,10 @@ package com.ikueb.advent17;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -19,14 +20,14 @@ final class Day22 {
     static int countInfectedNodes(List<String> input, int iterations,
                                   BiFunction<State, Direction, Direction> header,
                                   UnaryOperator<State> updater) {
-        Set<Node> nodes = getNodes(input);
+        Map<Point, Node> nodes = getNodes(input);
         Direction direction = Direction.N;
-        Node current = findOrAdd(nodes, 0, 0);
+        Node current = nodes.computeIfAbsent(new Point(0, 0), Node::new);
         int counter = 0;
         for (int i = 0; i < iterations; i++) {
             Step step = current.getNextStep(direction, header, updater);
             direction = step.direction;
-            current = findOrAdd(nodes, step.x, step.y);
+            current = nodes.computeIfAbsent(step.point, Node::new);
             if (step.hasCausedInfection) {
                 counter++;
             }
@@ -34,54 +35,45 @@ final class Day22 {
         return counter;
     }
 
-    private static Node findOrAdd(Set<Node> nodes, int x, int y) {
-        Optional<Node> node = nodes.stream()
-                .parallel()
-                .filter(n -> n.x == x && n.y == y)
-                .findFirst();
-        if (node.isPresent()) {
-            return node.get();
-        }
-        Node newNode = new Node(x, y, State.CLEAN);
-        nodes.add(newNode);
-        return newNode;
-    }
-
-    private static Set<Node> getNodes(List<String> input) {
+    private static Map<Point, Node> getNodes(List<String> input) {
         int edge = input.size() / 2;
         return IntStream.rangeClosed(-1 * edge, edge)
                 .boxed()
                 .flatMap(y -> IntStream.rangeClosed(-1 * edge, edge)
-                        .mapToObj(x -> new Node(x, 0 - y,
+                        .mapToObj(x -> new Node(new Point(x, 0 - y),
                                 input.get(y + edge).charAt(x + edge) == '#'
                                         ? State.INFECTED : State.CLEAN)))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toMap(Node::getPoint, Function.identity()));
 
     }
 
     private static final class Step {
         final Direction direction;
-        final int x;
-        final int y;
+        final Point point;
         final boolean hasCausedInfection;
 
-        Step(Direction direction, int x, int y, boolean hasCausedInfection) {
+        Step(Direction direction, Point point, boolean hasCausedInfection) {
             this.direction = direction;
-            this.x = direction.nextX(x);
-            this.y = direction.nextY(y);
+            this.point = direction.next(point);
             this.hasCausedInfection = hasCausedInfection;
         }
     }
 
     private static final class Node {
-        private final int x;
-        private final int y;
+        private final Point point;
         private State state;
 
-        Node(int x, int y, State state) {
-            this.x = x;
-            this.y = y;
+        Node(Point point) {
+            this(point, State.CLEAN);
+        }
+
+        Node(Point point, State state) {
+            this.point = point;
             this.state = state;
+        }
+
+        Point getPoint() {
+            return point;
         }
 
         Step getNextStep(Direction direction,
@@ -89,15 +81,41 @@ final class Day22 {
                          UnaryOperator<State> updater) {
             Direction nextDirection = header.apply(state, direction);
             state = updater.apply(state);
-            return new Step(nextDirection, x, y, state == State.INFECTED);
+            return new Step(nextDirection, point, state == State.INFECTED);
+        }
+    }
+
+    private static final class Point {
+        private final int x;
+        private final int y;
+
+        Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Point
+                    && x == ((Point) o).x
+                    && y == ((Point) o).y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 
     enum State {
         CLEAN, WEAKENED, INFECTED, FLAGGED;
 
+        private static final List<State> STATES =
+                Arrays.stream(values()).collect(Collectors.toList());
+        private static final int SIZE = STATES.size();
+
         State next() {
-            return values()[ordinal() + 1 == values().length ? 0 : ordinal() + 1];
+            return STATES.get(ordinal() + 1 == SIZE ? 0 : ordinal() + 1);
         }
     }
 
@@ -131,12 +149,8 @@ final class Day22 {
             return DIRECTIONS.get((ordinal() + 2) % SIZE);
         }
 
-        int nextX(int x) {
-            return xOp.applyAsInt(x);
-        }
-
-        int nextY(int y) {
-            return yOp.applyAsInt(y);
+        Point next(Point point) {
+            return new Point(xOp.applyAsInt(point.x), yOp.applyAsInt(point.y));
         }
     }
 }
