@@ -34,12 +34,12 @@ final class Day21 {
         private int added = 0;
 
         Area(int size) {
-            this.contents = new ArrayList<>();
+            this.contents = new ArrayList<>(size);
             this.size = size;
         }
 
         Area(List<String> contents) {
-            this.contents = new ArrayList<>(contents);
+            this.contents = contents;
             this.size = contents.size();
         }
 
@@ -140,28 +140,24 @@ final class Day21 {
                 "(?<input>[.#/]+) => (?<output>[.#/]+)");
         private static final Pattern SPLITTER = Pattern.compile("/");
 
-        private final Area input;
+        private final List<Area> permutations;
         private final Supplier<Area> output;
 
         Rule(Area input, Supplier<Area> output) {
-            this.input = input;
-            this.output = output;
-        }
-
-        Optional<Area> getConvertedOutput(Area input) {
-            return getInputPermutations().anyMatch(input::equals)
-                    ? Optional.of(output.get())
-                    : Optional.empty();
-        }
-
-        Stream<Area> getInputPermutations() {
-            return Stream.of(
+            this.permutations = Arrays.asList(
                     input,
                     input.flipHorizontal(),
                     input.flipVertical(),
                     input.flipHorizontal().flipVertical(),
                     input.rotate(),
                     input.rotate().flipHorizontal().flipVertical());
+            this.output = output;
+        }
+
+        Optional<Area> getConvertedOutput(Area input) {
+            return permutations.contains(input)
+                    ? Optional.of(output.get())
+                    : Optional.empty();
         }
 
         static Rule from(String rule) {

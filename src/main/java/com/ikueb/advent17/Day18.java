@@ -140,10 +140,13 @@ final class Day18 {
         JGZ((map, i) -> Optional.of(getValue(map, "  " + i))
                 .filter(v -> v > 0).map(v -> getValue(map, i)).orElse(null));
 
-        private static final Map<String, Instruction> INSTRUCTIONS = Arrays.stream(values())
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(Instruction::getKey, Function.identity()),
-                        Collections::unmodifiableMap));
+        private static final Map<String, Instruction> INSTRUCTIONS =
+                Arrays.stream(values())
+                        .collect(Collectors.collectingAndThen(
+                                Collectors.toMap(
+                                        Instruction::getKey,
+                                        Function.identity()),
+                                Collections::unmodifiableMap));
 
         private final BiFunction<Map<Character, Long>, String, Long> op;
 
