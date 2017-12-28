@@ -3,9 +3,9 @@ package com.ikueb.advent17;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import static com.ikueb.advent17.Day23.getH;
 import static com.ikueb.advent17.Day23.getInvocationCount;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -15,6 +15,11 @@ public class Day23Test {
     @Test
     public void testGetInvocationCount() {
         assertThat(getInvocationCount(INPUTS, Instruction.MUL), equalTo(6724));
+    }
+
+    @Test
+    public void testGetH() {
+        assertThat(getH(84), equalTo(903));
     }
 
     private static final List<String> INPUTS = Arrays.asList(

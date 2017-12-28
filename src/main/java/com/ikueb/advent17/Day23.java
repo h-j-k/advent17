@@ -1,5 +1,6 @@
 package com.ikueb.advent17;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,19 @@ final class Day23 {
         for (int i = 0; i < temp.size(); i += result.jumpToNextInstruction()) {
             result = Instruction.compute(map, temp.get(i));
             if (result.getInstruction() == instruction) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    static int getH(int seed) {
+        // with lots of help from reddit
+        int counter = 0;
+        int original = seed * 100 + 100000;
+        for (int i = 0; i <= 1000; i++) {
+            int number = original + 17 * i;
+            if (!BigInteger.valueOf(number).isProbablePrime(100000)) {
                 counter++;
             }
         }

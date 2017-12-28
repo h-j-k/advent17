@@ -9,6 +9,10 @@ final class Day25 {
     private static final Pattern EXTRACTOR =
             Pattern.compile("^.* ([0-9A-Z]+|left|right)(?: steps)?[.:]$");
 
+    private Day25() {
+        // empty
+    }
+
     static long getDiagnosticChecksum(List<String> inputs) {
         Iterator<String> iterator = inputs.iterator();
         char currentState = getCharacter(iterator.next());
