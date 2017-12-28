@@ -5,9 +5,6 @@ import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 final class Day18 {
 
@@ -21,7 +18,7 @@ final class Day18 {
         List<String> temp = new ArrayList<>(instructions);
         Result result;
         for (int i = 0; ; i += result.jumpToNextInstruction()) {
-            result = Instruction.compute(map, temp.get(i));
+            result = new Result(Instruction.compute(map, temp.get(i)));
             if (result.isPlayed()) {
                 lastPlayed = result.getValue();
             } else if (result.isRecovered()) {
@@ -62,7 +59,7 @@ final class Day18 {
         public void run() {
             Result result;
             for (int i = 0; ; i += result.jumpToNextInstruction()) {
-                result = Instruction.compute(map, temp.get(i));
+                result = new Result(Instruction.compute(map, temp.get(i)));
                 if (result.isSending() && queue.add(result.getValue())) {
                     counter++;
                 } else if (result.isReceiving()) {
@@ -85,98 +82,26 @@ final class Day18 {
         }
     }
 
-    private static final class Result {
-        private final Instruction instruction;
-        private final char register;
-        private final Long value;
+    private static final class Result extends InstructionResult {
 
-        private Result(Instruction instruction, char register, Long value) {
-            this.instruction = instruction;
-            this.register = register;
-            this.value = value;
-        }
-
-        char getRegister() {
-            return register;
-        }
-
-        long getValue() {
-            return value;
+        private Result(InstructionResult result) {
+            super(result.getInstruction(), result.getRegister(), result.getValue());
         }
 
         boolean isPlayed() {
-            return instruction == Instruction.SND;
+            return getInstruction() == Instruction.SND;
         }
 
         boolean isSending() {
-            return instruction == Instruction.SND;
+            return getInstruction() == Instruction.SND;
         }
 
         boolean isRecovered() {
-            return instruction == Instruction.RCV && value != null;
+            return getInstruction() == Instruction.RCV && value != null;
         }
 
         boolean isReceiving() {
-            return instruction == Instruction.RCV;
-        }
-
-        int jumpToNextInstruction() {
-            return instruction == Instruction.JGZ && value != null
-                    ? value.intValue() : 1;
-        }
-    }
-
-    private enum Instruction
-            implements BiFunction<Map<Character, Long>, String, Long> {
-        SND((map, i) -> getValue(map, "  " + i)),
-        SET((map, i) -> map.put(getRegister(i), getValue(map, i))),
-        ADD((map, i) -> map.merge(getRegister(i), getValue(map, i), Math::addExact)),
-        MUL((map, i) -> map.compute(getRegister(i),
-                (k, v) -> v == null ? 0 : v * getValue(map, i))),
-        MOD((map, i) -> map.compute(getRegister(i),
-                (k, v) -> v == null ? 0 : v % getValue(map, i))),
-        RCV((map, i) -> Optional.ofNullable(map.get(getRegister(i)))
-                .filter(v -> v != 0).orElse(null)),
-        JGZ((map, i) -> Optional.of(getValue(map, "  " + i))
-                .filter(v -> v > 0).map(v -> getValue(map, i)).orElse(null));
-
-        private static final Map<String, Instruction> INSTRUCTIONS =
-                Arrays.stream(values())
-                        .collect(Collectors.collectingAndThen(
-                                Collectors.toMap(
-                                        Instruction::getKey,
-                                        Function.identity()),
-                                Collections::unmodifiableMap));
-
-        private final BiFunction<Map<Character, Long>, String, Long> op;
-
-        Instruction(BiFunction<Map<Character, Long>, String, Long> op) {
-            this.op = op;
-        }
-
-        @Override
-        public Long apply(Map<Character, Long> map, String instruction) {
-            return op.apply(map, instruction);
-        }
-
-        private String getKey() {
-            return name().toLowerCase();
-        }
-
-        private static char getRegister(String instruction) {
-            return instruction.charAt(0);
-        }
-
-        private static long getValue(Map<Character, Long> map, String instruction) {
-            return Character.isAlphabetic(instruction.charAt(2))
-                    ? map.getOrDefault(instruction.charAt(2), 0L)
-                    : Long.parseLong(instruction.substring(2).replaceFirst(" .*$", ""));
-        }
-
-        static Result compute(Map<Character, Long> map, String instruction) {
-            Instruction current = INSTRUCTIONS.get(instruction.substring(0, 3));
-            return new Result(current, instruction.charAt(4),
-                    current.apply(map, instruction.substring(4)));
+            return getInstruction() == Instruction.RCV;
         }
     }
 }

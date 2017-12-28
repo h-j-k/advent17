@@ -14,7 +14,7 @@ public class Day23Test {
 
     @Test
     public void testGetInvocationCount() {
-        assertThat(getInvocationCount(INPUTS, Day23.Instruction.MUL), equalTo(6724));
+        assertThat(getInvocationCount(INPUTS, Instruction.MUL), equalTo(6724));
     }
 
     private static final List<String> INPUTS = Arrays.asList(
