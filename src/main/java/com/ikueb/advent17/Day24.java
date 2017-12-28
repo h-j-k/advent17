@@ -50,16 +50,16 @@ final class Day24 {
         private final int weight;
         private final int length;
 
-        Result(int weight, int length) {
+        private Result(int weight, int length) {
             this.weight = weight;
             this.length = length;
         }
 
-        int getWeight() {
+        private int getWeight() {
             return weight;
         }
 
-        int getLength() {
+        private int getLength() {
             return length;
         }
 
@@ -67,11 +67,11 @@ final class Day24 {
             return weight;
         }
 
-        Result addWeight(Bridge bridge) {
+        private Result addWeight(Bridge bridge) {
             return new Result(weight + bridge.getWeight(), length + 1);
         }
 
-        static Result max(Comparator<Result> comparator, Result a, Result b) {
+        private static Result max(Comparator<Result> comparator, Result a, Result b) {
             return comparator.compare(a, b) < 0 ? b : a;
         }
     }
