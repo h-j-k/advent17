@@ -41,8 +41,9 @@ final class Day24 {
 
     static final class Result {
         private static final Result START = new Result(0, 0);
-        static Comparator<Result> WEIGHT = Comparator.comparing(Result::getWeight);
-        static Comparator<Result> LENGTH_THEN_WEIGHT =
+        static final Comparator<Result> BY_WEIGHT =
+                Comparator.comparing(Result::getWeight);
+        static final Comparator<Result> BY_LENGTH_THEN_WEIGHT =
                 Comparator.comparing(Result::getLength)
                         .thenComparing(Result::getWeight);
 

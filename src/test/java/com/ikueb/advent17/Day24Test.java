@@ -15,17 +15,17 @@ public class Day24Test {
     @Test
     public void testFindStrongestBridge() {
         assertThat(findStrongestBridge(
-                EXAMPLE, Day24.Result.WEIGHT).getResult(), equalTo(31));
+                EXAMPLE, Day24.Result.BY_WEIGHT).getResult(), equalTo(31));
         assertThat(findStrongestBridge(
-                INPUTS, Day24.Result.WEIGHT).getResult(), equalTo(2006));
+                INPUTS, Day24.Result.BY_WEIGHT).getResult(), equalTo(2006));
     }
 
     @Test
     public void testFindLongestAndStrongestBridge() {
         assertThat(findStrongestBridge(
-                EXAMPLE, Day24.Result.LENGTH_THEN_WEIGHT).getResult(), equalTo(19));
+                EXAMPLE, Day24.Result.BY_LENGTH_THEN_WEIGHT).getResult(), equalTo(19));
         assertThat(findStrongestBridge(
-                INPUTS, Day24.Result.LENGTH_THEN_WEIGHT).getResult(), equalTo(1994));
+                INPUTS, Day24.Result.BY_LENGTH_THEN_WEIGHT).getResult(), equalTo(1994));
     }
 
     private static final List<String> EXAMPLE = Arrays.asList(
