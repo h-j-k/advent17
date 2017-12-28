@@ -88,14 +88,6 @@ final class Day24 {
             this.weight = input + output;
         }
 
-        int getInput() {
-            return input;
-        }
-
-        int getOutput() {
-            return output;
-        }
-
         int getWeight() {
             return weight;
         }
