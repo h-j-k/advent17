@@ -1,13 +1,14 @@
 package com.ikueb.advent17;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.IntBinaryOperator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 final class Day08 {
 
@@ -67,9 +68,7 @@ final class Day08 {
         private final IntBinaryOperator op;
 
         private static final Map<String, RegisterOp> LOOKUP = Arrays.stream(values())
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(RegisterOp::key, Function.identity()),
-                        Collections::unmodifiableMap));
+                .collect(MainUtils.mapWithKey(RegisterOp::key));
 
         RegisterOp(IntBinaryOperator op) {
             this.op = op;
@@ -101,9 +100,7 @@ final class Day08 {
         private final BiPredicate<Integer, Integer> op;
 
         private static final Map<String, ConditionOp> LOOKUP = Arrays.stream(values())
-                .collect(Collectors.collectingAndThen(
-                        Collectors.toMap(ConditionOp::key, Function.identity()),
-                        Collections::unmodifiableMap));
+                .collect(MainUtils.mapWithKey(ConditionOp::key));
 
         ConditionOp(String key, BiPredicate<Integer, Integer> op) {
             this.key = key;

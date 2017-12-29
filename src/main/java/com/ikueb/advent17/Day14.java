@@ -34,7 +34,7 @@ final class Day14 {
     private static Set<Element> getNextRegion(Set<Element> usedSquares) {
         return usedSquares.isEmpty() ? Collections.emptySet()
                 : iterate(usedSquares.iterator().next(), new HashSet<>(), usedSquares)
-                .collect(Collectors.toSet());
+                .collect(MainUtils.toUnmodifiableSet());
     }
 
     private static Stream<Element> iterate(Element current,

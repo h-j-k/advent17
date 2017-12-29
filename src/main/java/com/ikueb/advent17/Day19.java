@@ -1,8 +1,9 @@
 package com.ikueb.advent17;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 final class Day19 {
@@ -44,7 +45,7 @@ final class Day19 {
                             .mapToObj(x -> new Element(x, y, row.charAt(x)));
                 })
                 .filter(Element::isPath)
-                .collect(Collectors.toSet());
+                .collect(MainUtils.toUnmodifiableSet());
     }
 
     static final class Result {
@@ -79,11 +80,7 @@ final class Day19 {
         Map<Element, Direction> getNeighborsRelativeTo(Set<Element> paths) {
             return paths.stream()
                     .filter(this::isNextTo)
-                    .collect(Collectors.collectingAndThen(
-                            Collectors.toMap(
-                                    Function.identity(),
-                                    element -> element.getRelativeFrom(this)),
-                            Collections::unmodifiableMap));
+                    .collect(MainUtils.mapWithValue(this::getRelativeTo));
         }
 
         private boolean isNextTo(Element element) {
@@ -91,15 +88,11 @@ final class Day19 {
                     || element.y == y && Math.abs(element.x - x) == 1;
         }
 
-        private Direction getRelativeFrom(Element element) {
+        private Direction getRelativeTo(Element element) {
             if (element.x == x) {
-                return element.y > y
-                        ? Direction.N
-                        : Direction.S;
+                return element.y < y ? Direction.N : Direction.S;
             }
-            return element.x > x
-                    ? Direction.W
-                    : Direction.E;
+            return element.x < x ? Direction.W : Direction.E;
         }
 
         boolean isPath() {

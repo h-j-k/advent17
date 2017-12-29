@@ -1,9 +1,12 @@
 package com.ikueb.advent17;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class Day16 {
 
@@ -14,17 +17,23 @@ final class Day16 {
     }
 
     static String dance(String input, String instructions) {
-        return SPLITTER.splitAsStream(instructions)
-                .reduce(input, (programs, instruction) ->
-                        Instruction.get(instruction.charAt(0))
-                                .apply(programs, instruction.substring(1)));
+        return dance(input, SPLITTER.splitAsStream(instructions));
+    }
+
+    private static String dance(String input, Stream<String> stream) {
+        return stream.reduce(input, (programs, instruction) ->
+                Instruction.get(instruction.charAt(0))
+                        .apply(programs, instruction.substring(1)));
     }
 
     static String danceTillDrop(String input, String instructions) {
+        List<String> instructionList = SPLITTER.splitAsStream(instructions)
+                .collect(Collectors.toList());
         Map<String, String> cache = new HashMap<>();
         String previous = input;
         for (int i = 0; i < 1_000_000_000; i++) {
-            previous = cache.computeIfAbsent(previous, k -> dance(k, instructions));
+            previous = cache.computeIfAbsent(previous,
+                    k -> dance(k, instructionList.stream()));
         }
         return previous;
     }

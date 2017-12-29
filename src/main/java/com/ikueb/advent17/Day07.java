@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -54,7 +53,7 @@ final class Day07 {
     private static Map<String, Program> generateMap(Collection<String> programs) {
         Map<String, Program> map = programs.stream()
                 .map(Program::parse)
-                .collect(Collectors.toMap(Program::getName, Function.identity()));
+                .collect(MainUtils.mapWithKey(Program::getName));
         map.values().forEach(p -> p.setChildren(map));
         return map;
     }
@@ -104,9 +103,7 @@ final class Day07 {
 
         Map<Program, Integer> getChildrenWeight() {
             return children.stream()
-                    .collect(Collectors.toMap(
-                            Function.identity(),
-                            Program::getTotalWeight));
+                    .collect(MainUtils.mapWithValue(Program::getTotalWeight));
         }
 
         static Program parse(String line) {
@@ -120,8 +117,7 @@ final class Day07 {
                     CHILDREN_PARSER.splitAsStream(
                             Objects.toString(matcher.group("children"), ""))
                             .filter(v -> !v.isEmpty())
-                            .collect(Collectors.collectingAndThen(Collectors.toSet(),
-                                    Collections::unmodifiableSet)));
+                            .collect(MainUtils.toUnmodifiableSet()));
         }
     }
 }

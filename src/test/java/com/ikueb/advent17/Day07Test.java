@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.ikueb.advent17.Day07.getBottomProgram;
@@ -44,7 +42,7 @@ public class Day07Test {
         Program child = Program.parse("child (1)");
         assertProgram(child, "child", 1, 1, false, Collections.emptyMap());
         Map<String, Program> map = Stream.of(parent, child)
-                .collect(Collectors.toMap(Program::getName, Function.identity()));
+                .collect(MainUtils.mapWithKey(Program::getName));
         parent.setChildren(map);
         assertProgram(parent, "parent", 2, 3, false, Map.of(child, 1));
         assertProgram(child, "child", 1, 1, true, Collections.emptyMap());

@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -108,7 +107,7 @@ final class Day24 {
             return IntStream.of(input, output)
                     .distinct()
                     .boxed()
-                    .collect(Collectors.toMap(Function.identity(), v -> this))
+                    .collect(MainUtils.mapWithValue(v -> this))
                     .entrySet()
                     .stream();
         }

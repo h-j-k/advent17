@@ -84,8 +84,7 @@ final class Day12 {
                     Integer.parseInt(matcher.group("id")),
                     TARGET_PARSER.splitAsStream(matcher.group("target"))
                             .map(Integer::valueOf)
-                            .collect(Collectors.collectingAndThen(Collectors.toSet(),
-                                    Collections::unmodifiableSet)));
+                            .collect(MainUtils.toUnmodifiableSet()));
         }
     }
 }
