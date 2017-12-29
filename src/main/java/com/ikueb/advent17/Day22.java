@@ -110,8 +110,7 @@ final class Day22 {
     enum State {
         CLEAN, WEAKENED, INFECTED, FLAGGED;
 
-        private static final List<State> STATES =
-                Arrays.stream(values()).collect(Collectors.toList());
+        private static final List<State> STATES = Arrays.asList(values());
         private static final int SIZE = STATES.size();
 
         State next() {
@@ -133,8 +132,7 @@ final class Day22 {
             this.yOp = yOp;
         }
 
-        private static final List<Direction> DIRECTIONS =
-                Arrays.stream(values()).collect(Collectors.toList());
+        private static final List<Direction> DIRECTIONS = Arrays.asList(values());
         private static final int SIZE = DIRECTIONS.size();
 
         Direction right() {
