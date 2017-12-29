@@ -5,8 +5,8 @@ addons:
 language: java
 jdk:
 - oraclejdk9
-before_script:
-- chmod +x gradlew
+before_install:
+- chmod +x ./gradlew
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
@@ -22,5 +22,5 @@ deploy:
   on:
     branch: master
 after_success:
-- gradle generateJavadoc && cp "${TRAVIS_BUILD_DIR}/README.md" "${TRAVIS_BUILD_DIR}/build/docs"
-- gradle jacocoTestReport sonarqube && bash <(curl -s https://codecov.io/bash)
+- ./gradlew generateJavadoc && cp "${TRAVIS_BUILD_DIR}/README.md" "${TRAVIS_BUILD_DIR}/build/docs"
+- ./gradlew jacocoTestReport sonarqube && bash <(curl -s https://codecov.io/bash)
