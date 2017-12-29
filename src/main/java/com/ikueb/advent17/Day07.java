@@ -1,6 +1,7 @@
 package com.ikueb.advent17;
 
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ final class Day07 {
     private static String getBottomProgram(Map<String, Program> map) {
         return map.entrySet().stream()
                 .filter(entry -> !entry.getValue().hasParent())
-                .map(Map.Entry::getKey)
+                .map(Entry::getKey)
                 .iterator()
                 .next();
     }
@@ -33,16 +34,14 @@ final class Day07 {
         Map<Integer, Set<Program>> childrenWeight =
                 parent.getChildrenWeight().entrySet().stream()
                         .collect(Collectors.groupingBy(
-                                Map.Entry::getValue,
-                                Collectors.mapping(
-                                        Map.Entry::getKey,
-                                        Collectors.toSet())));
+                                Entry::getValue,
+                                Collectors.mapping(Entry::getKey, Collectors.toSet())));
         if (childrenWeight.size() < 2) {
             return parent.getWeight() - delta;
         }
         IntSummaryStatistics stats = childrenWeight.keySet().stream()
                 .collect(Collectors.summarizingInt(Integer::intValue));
-        Map.Entry<Integer, Set<Program>> unbalanced = childrenWeight.entrySet().stream()
+        Entry<Integer, Set<Program>> unbalanced = childrenWeight.entrySet().stream()
                 .filter(entry -> entry.getValue().size() == 1)
                 .iterator()
                 .next();
@@ -113,13 +112,14 @@ final class Day07 {
         static Program parse(String line) {
             Matcher matcher = LINE_PARSER.matcher(line);
             if (!matcher.matches()) {
-                throw new UnexpectedException("Unable to parse: " + line);
+                throw new UnexpectedException("program but got: " + line);
             }
             return new Program(
                     matcher.group("name"),
                     Integer.parseInt(matcher.group("weight")),
                     CHILDREN_PARSER.splitAsStream(
                             Objects.toString(matcher.group("children"), ""))
+                            .filter(v -> !v.isEmpty())
                             .collect(Collectors.collectingAndThen(Collectors.toSet(),
                                     Collections::unmodifiableSet)));
         }

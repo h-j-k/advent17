@@ -20,7 +20,8 @@ public class Day21Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a rule but got: malformed_line.")
     public void testUnableToParseMalformedLine() {
         Day21.Rule.from("malformed_line");
     }

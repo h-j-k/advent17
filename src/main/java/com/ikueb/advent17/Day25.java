@@ -21,7 +21,7 @@ final class Day25 {
         char stateName = getCharacter(iterator.next());
         int iterations = getNumber(iterator.next());
         Map<Character, State> states = getStateMap(iterator);
-        Map<Integer, Integer> results = new HashMap<>(Collections.singletonMap(0, 0));
+        Map<Integer, Integer> results = new HashMap<>(Map.of(0, 0));
         int index = 0;
         for (int i = 0; i < iterations; i++) {
             State current = states.get(stateName);
@@ -57,7 +57,7 @@ final class Day25 {
         if (matcher.matches()) {
             return matcher.group(1);
         }
-        throw new UnexpectedException("Expecting a value.");
+        throw new UnexpectedException("value");
     }
 
     private static final class Step {
@@ -72,12 +72,10 @@ final class Day25 {
         }
 
         static Map<Integer, Step> create(Iterator<String> iterator) {
-            return Collections.singletonMap(
+            return Map.of(getNumber(iterator.next()), new Step(
                     getNumber(iterator.next()),
-                    new Step(
-                            getNumber(iterator.next()),
-                            getValue(iterator.next()).equals("left") ? -1 : 1,
-                            getCharacter(iterator.next())));
+                    getValue(iterator.next()).equals("left") ? -1 : 1,
+                    getCharacter(iterator.next())));
         }
     }
 

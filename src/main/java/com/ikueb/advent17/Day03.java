@@ -18,23 +18,23 @@ final class Day03 {
                 .map(i -> end - 2 * layer * i)
                 .filter(i -> n >= i || n > i - layer)
                 .findFirst()
-                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
+                .orElseThrow(() -> new UnexpectedException("result"));
         return layer + Math.abs(n - chosen);
     }
 
     static int getFirstAfter(int min) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i = 1; ; i++) {
-            if (find(map, i) > min) {
-                return map.get(i);
-            }
-        }
+        return IntStream.iterate(1, i -> i + 1)
+                .dropWhile(i -> find(map, i) <= min)
+                .boxed()
+                .findFirst()
+                .map(map::get)
+                .orElseThrow(() -> new UnexpectedException("result"));
     }
 
     private static int find(Map<Integer, Integer> map, int n) {
-        return map.computeIfAbsent(n, k -> Math.max(1, Place.around(k)
-                .map(i -> find(map, i))
-                .sum()));
+        return map.computeIfAbsent(n, k ->
+                Math.max(1, Place.around(k).map(i -> find(map, i)).sum()));
     }
 
     private static int getLayer(int n) {

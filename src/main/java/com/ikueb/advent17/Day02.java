@@ -43,6 +43,6 @@ final class Day02 {
                 }
             }
         }
-        throw new UnexpectedException("There must be only one evenly divisible pair");
+        throw new UnexpectedException("single evenly divisible pair");
     }
 }

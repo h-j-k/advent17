@@ -61,9 +61,9 @@ final class Day11 {
         SW(-1, 0, 1),
         NW(-1, 1, 0);
 
-        private final int x;
-        private final int y;
-        private final int z;
+        final int x;
+        final int y;
+        final int z;
 
         Cardinal(int x, int y, int z) {
             this.x = x;

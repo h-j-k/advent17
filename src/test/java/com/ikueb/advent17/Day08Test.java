@@ -27,7 +27,7 @@ public class Day08Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "Expecting a result")
+            expectedExceptionsMessageRegExp = "Expecting a result.")
     public void testGetLargestRegisterWithEmptyInputThrows() {
         getLargestRegister(Collections.emptyList());
     }

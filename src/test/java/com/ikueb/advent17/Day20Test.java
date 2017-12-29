@@ -5,7 +5,7 @@ import org.testng.annotations.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.ikueb.advent17.Day20.countUncollidedParticles;
+import static com.ikueb.advent17.Day20.countParticlesNotCollided;
 import static com.ikueb.advent17.Day20.getClosestParticleToOrigin;
 import static com.ikueb.advent17.Utils.getInput;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -20,13 +20,14 @@ public class Day20Test {
     }
 
     @Test
-    public void testCountUncollidedParticles() {
-        assertThat(countUncollidedParticles(PART_TWO), equalTo(1));
-        assertThat(countUncollidedParticles(INPUT), equalTo(420));
+    public void testCountParticlesNotCollided() {
+        assertThat(countParticlesNotCollided(PART_TWO), equalTo(1));
+        assertThat(countParticlesNotCollided(INPUT), equalTo(420));
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a particle but got: malformed_line.")
     public void testUnableToParseMalformedLine() {
         Day20.Particle.from("malformed_line");
     }

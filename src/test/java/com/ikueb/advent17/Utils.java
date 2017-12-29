@@ -16,7 +16,7 @@ final class Utils {
             return Files.readAllLines(Paths.get("build", "resources", "test",
                     clazz.getSimpleName() + ".txt"));
         } catch (IOException e) {
-            throw new UnexpectedException(e.getMessage());
+            throw new UnexpectedException("number of lines but got: " + e.getMessage());
         }
     }
 
@@ -25,7 +25,7 @@ final class Utils {
             return Files.readAllLines(Paths.get("build", "resources", "test",
                     clazz.getSimpleName() + ".txt")).iterator().next();
         } catch (IOException e) {
-            throw new UnexpectedException(e.getMessage());
+            throw new UnexpectedException("line but got: " + e.getMessage());
         }
     }
 }

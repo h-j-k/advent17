@@ -29,8 +29,9 @@ public class Day10Test {
                 with("1,2,3", "3efbe78a8d82f29979031a4aa0b16a9d"),
                 with("1,2,4", "63960835bcdc130f0b66d7ff4f6a5a8e"),
                 with(Arrays.stream(LENGTHS)
-                        .mapToObj(String::valueOf)
-                        .collect(Collectors.joining(",")), "23234babdc6afa036749cfa9b597de1b")
+                                .mapToObj(String::valueOf)
+                                .collect(Collectors.joining(",")),
+                        "23234babdc6afa036749cfa9b597de1b")
         ).iterator();
     }
 
@@ -43,5 +44,6 @@ public class Day10Test {
         assertThat(hash(input), equalTo(hash));
     }
 
-    private static final int[] LENGTHS = {18, 1, 0, 161, 255, 137, 254, 252, 14, 95, 165, 33, 181, 168, 2, 188};
+    private static final int[] LENGTHS =
+            {18, 1, 0, 161, 255, 137, 254, 252, 14, 95, 165, 33, 181, 168, 2, 188};
 }

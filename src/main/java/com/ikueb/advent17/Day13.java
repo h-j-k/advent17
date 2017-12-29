@@ -30,7 +30,7 @@ final class Day13 {
                         .allMatch(v -> v.getSeverityPlusDelay(i) == 0))
                 .findFirst()
                 .orElseThrow(() -> new UnexpectedException(
-                        "Expecting a delay less than " + MAX_DELAY));
+                        "delay less than " + MAX_DELAY));
     }
 
     static final class Layer {
@@ -58,7 +58,7 @@ final class Day13 {
         static Layer parse(String layer) {
             Matcher matcher = PARSER.matcher(layer);
             if (!matcher.matches()) {
-                throw new UnexpectedException("Unable to parse: " + layer);
+                throw new UnexpectedException("layer but got: " + layer);
             }
             return new Layer(Integer.parseInt(matcher.group("position")),
                     Integer.parseInt(matcher.group("level")));

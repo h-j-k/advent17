@@ -25,13 +25,15 @@ public class Day13Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a layer but got: malformed_line.")
     public void testUnableToParseMalformedLine() {
         Layer.parse("malformed_line");
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Expecting a delay less than " + MAX_DELAY)
+            expectedExceptionsMessageRegExp =
+                    "Expecting a delay less than " + MAX_DELAY + ".")
     public void testExpectingADelay() {
         getMinimumDelay(Arrays.asList("0: 1", "1: 1"));
     }

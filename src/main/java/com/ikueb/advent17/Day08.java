@@ -27,7 +27,7 @@ final class Day08 {
         return process(instructions, value -> { /* */ }).values().stream()
                 .mapToInt(Integer::intValue)
                 .max()
-                .orElseThrow(() -> new UnexpectedException("Expecting a result"));
+                .orElseThrow(() -> new UnexpectedException("result"));
     }
 
     static int getLargestRegisterEver(List<String> instructions) {

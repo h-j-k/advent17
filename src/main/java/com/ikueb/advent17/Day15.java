@@ -58,7 +58,7 @@ final class Day15 {
 
         private static IntSupplier findFirst(IntStream stream) {
             return () -> stream.skip(1).findFirst()
-                    .orElseThrow(() -> new UnexpectedException("Expecting a value."));
+                    .orElseThrow(() -> new UnexpectedException("value"));
         }
     }
 }

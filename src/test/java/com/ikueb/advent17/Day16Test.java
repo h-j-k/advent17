@@ -24,7 +24,8 @@ public class Day16Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Should be one of: sX, xA/B, pA/B$")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a value of: sX, xA/B, pA/B.")
     public void testInvalidInstructions() {
         dance("", " ");
     }

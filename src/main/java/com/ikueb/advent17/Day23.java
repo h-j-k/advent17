@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 final class Day23 {
 
@@ -27,16 +28,11 @@ final class Day23 {
         return counter;
     }
 
-    static int getH(int seed) {
+    static long getH(int value) {
         // with lots of help from reddit
-        int counter = 0;
-        int original = seed * 100 + 100000;
-        for (int i = 0; i <= 1000; i++) {
-            int number = original + 17 * i;
-            if (!BigInteger.valueOf(number).isProbablePrime(100000)) {
-                counter++;
-            }
-        }
-        return counter;
+        int seed = value * 100 + 100000;
+        return IntStream.iterate(0, i -> i <= 1000, i -> i + 1)
+                .filter(i -> !BigInteger.valueOf(seed + 17 * i).isProbablePrime(100))
+                .count();
     }
 }

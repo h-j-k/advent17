@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import org.testng.annotations.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.ikueb.advent17.Day02.checksumInput;
@@ -24,7 +23,7 @@ public class Day02Test {
 
     @Test(expectedExceptions = UnexpectedException.class)
     public void testUnexpectedNonEvenlyDivisibleList() {
-        checksumInput(Collections.singletonList("2 3"), Day02::evenlyDivisible);
+        checksumInput(List.of("2 3"), Day02::evenlyDivisible);
     }
 
     private static final List<String> MATRIX = getInput(Day02.class);

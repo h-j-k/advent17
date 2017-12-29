@@ -24,10 +24,10 @@ final class Day20 {
                 .sorted(Comparator.comparing(
                         i -> particles.get(i).getTotalAcceleration()))
                 .findFirst()
-                .orElseThrow(() -> new UnexpectedException("Expecting a particle."));
+                .orElseThrow(() -> new UnexpectedException("particle"));
     }
 
-    static int countUncollidedParticles(List<String> input) {
+    static int countParticlesNotCollided(List<String> input) {
         List<Particle> particles = toParticles(input);
         int lastCount = -1;
         for (int i = 1; lastCount != particles.size() || i <= ITERATIONS; i++) {
@@ -44,9 +44,7 @@ final class Day20 {
     }
 
     private static List<Particle> toParticles(List<String> input) {
-        return input.stream()
-                .map(Particle::from)
-                .collect(Collectors.toList());
+        return input.stream().map(Particle::from).collect(Collectors.toList());
     }
 
     static final class Position {
@@ -109,7 +107,7 @@ final class Day20 {
         static Particle from(String definition) {
             Matcher matcher = PARSER.matcher(definition);
             if (!matcher.matches()) {
-                throw new UnexpectedException("Unable to parse: " + definition);
+                throw new UnexpectedException("particle but got: " + definition);
             }
             return new Particle(
                     toArray(matcher.group("p")),

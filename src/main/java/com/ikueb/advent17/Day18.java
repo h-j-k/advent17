@@ -46,7 +46,7 @@ final class Day18 {
         private int counter = 0;
 
         private Program(long p, List<String> instructions) {
-            this.map = new HashMap<>(Collections.singletonMap('p', p));
+            this.map = new HashMap<>(Map.of('p', p));
             this.temp = new ArrayList<>(instructions);
         }
 

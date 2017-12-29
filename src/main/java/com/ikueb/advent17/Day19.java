@@ -17,7 +17,7 @@ final class Day19 {
         Element origin = paths.stream()
                 .filter(Element::isStart)
                 .findAny()
-                .orElseThrow(() -> new UnexpectedException("Expecting origin."));
+                .orElseThrow(() -> new UnexpectedException("starting element."));
         Direction direction = Direction.S;
         int counter = 1;
         for (Element previous = null, current = origin; ;
@@ -128,8 +128,7 @@ final class Day19 {
                     .filter(element -> !previous.equals(element))
                     .findFirst()
                     .map(neighbours::get)
-                    .orElseThrow(() -> new UnexpectedException(
-                            "Expecting another direction."));
+                    .orElseThrow(() -> new UnexpectedException("direction"));
         }
 
         boolean isEnd(Set<Element> paths) {
@@ -142,7 +141,7 @@ final class Day19 {
                     .filter(element -> neighbours.get(element) == current)
                     .findFirst()
                     .orElseThrow(() -> new UnexpectedException(
-                            "Expecting next element."));
+                            "next element"));
         }
 
         @Override

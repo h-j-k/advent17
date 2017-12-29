@@ -46,7 +46,7 @@ public class Day07Test {
         Map<String, Program> map = Stream.of(parent, child)
                 .collect(Collectors.toMap(Program::getName, Function.identity()));
         parent.setChildren(map);
-        assertProgram(parent, "parent", 2, 3, false, Collections.singletonMap(child, 1));
+        assertProgram(parent, "parent", 2, 3, false, Map.of(child, 1));
         assertProgram(child, "child", 1, 1, true, Collections.emptyMap());
         child.setChildren(map);
         assertProgram(child, "child", 1, 1, true, Collections.emptyMap());
@@ -67,7 +67,8 @@ public class Day07Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a program but got: malformed_line.")
     public void testUnableToParseMalformedLine() {
         Program.parse("malformed_line");
     }

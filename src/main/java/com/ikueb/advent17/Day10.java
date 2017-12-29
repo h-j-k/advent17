@@ -35,8 +35,8 @@ final class Day10 {
 
     private static Payload knot(Payload payload, int[] lengths) {
         int[] input = payload.copyResult();
-        int start = payload.getStart();
-        int skip = payload.getSkip();
+        int start = payload.start;
+        int skip = payload.skip;
         int listSize = input.length;
         IntBinaryOperator index = (a, b) -> a + b - listSize * ((a + b) / listSize);
         for (int i = 0, current = lengths[i];
@@ -57,8 +57,8 @@ final class Day10 {
     }
 
     static final class Payload {
-        private final int start;
-        private final int skip;
+        final int start;
+        final int skip;
         private final int[] result;
 
         Payload(int listSize) {
@@ -69,14 +69,6 @@ final class Day10 {
             this.start = start;
             this.skip = skip;
             this.result = result;
-        }
-
-        int getStart() {
-            return start;
-        }
-
-        int getSkip() {
-            return skip;
         }
 
         int[] copyResult() {

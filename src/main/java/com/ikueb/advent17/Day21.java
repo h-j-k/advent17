@@ -25,22 +25,22 @@ final class Day21 {
                 .skip(iterations)
                 .findFirst()
                 .map(Area::countPixelsOn)
-                .orElseThrow(() -> new UnexpectedException("Expecting pixels on."));
+                .orElseThrow(() -> new UnexpectedException("number of pixels."));
     }
 
     private static final class Area {
-        private final List<String> contents;
+        private final List<String> grid;
         private final int size;
         private int added = 0;
 
         Area(int size) {
-            this.contents = new ArrayList<>(size);
+            this.grid = new ArrayList<>(size);
             this.size = size;
         }
 
-        Area(List<String> contents) {
-            this.contents = contents;
-            this.size = contents.size();
+        Area(List<String> grid) {
+            this.grid = grid;
+            this.size = grid.size();
         }
 
         Area next(List<Rule> rules) {
@@ -56,45 +56,40 @@ final class Day21 {
             }
             int columns = size % 2 == 0 ? size / 2 : size / 3;
             int width = size / columns;
-            List<Area> result = new ArrayList<>();
-            for (int i = 0; i < size; i += width) {
-                for (int j = 0; j < size; j += width) {
-                    int x = j;
-                    result.add(new Area(IntStream.range(i, i + width)
-                            .mapToObj(y -> contents.get(y).substring(x, x + width))
-                            .collect(Collectors.toList())));
-                }
-            }
-            return result.stream();
+            return IntStream.iterate(0, i -> i < size, i -> i + width)
+                    .boxed()
+                    .flatMap(i -> IntStream.iterate(0, j -> j < size, j -> j + width)
+                            .boxed()
+                            .map(j -> IntStream.range(i, i + width)
+                                    .mapToObj(y -> grid.get(y).substring(j, j + width))
+                                    .collect(Collectors.collectingAndThen(
+                                            Collectors.toList(), Area::new))));
         }
 
         private Area convert(List<Rule> rules) {
             return rules.stream()
                     .map(rule -> rule.getConvertedOutput(this))
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+                    .flatMap(Optional::stream)
                     .findFirst()
-                    .orElseThrow(() -> new UnexpectedException(
-                            "Expecting an output."));
+                    .orElseThrow(() -> new UnexpectedException("pattern."));
         }
 
         private Area join(Area other) {
             int columns = size / other.size;
             if (added % columns == 0) {
-                contents.addAll(other.contents);
+                grid.addAll(other.grid);
             } else {
                 int start = other.size * (added / columns);
-                Iterator<String> iterator = other.contents.iterator();
-                for (int i = start; i < start + other.size; i++) {
-                    contents.set(i, contents.get(i) + iterator.next());
-                }
+                Iterator<String> iterator = other.grid.iterator();
+                IntStream.iterate(start, i -> i < start + other.size, i -> i + 1)
+                        .forEach(i -> grid.set(i, grid.get(i) + iterator.next()));
             }
             added++;
             return this;
         }
 
         long countPixelsOn() {
-            return contents.stream()
+            return grid.stream()
                     .flatMapToInt(String::chars)
                     .filter(v -> v == '#')
                     .count();
@@ -102,18 +97,18 @@ final class Day21 {
 
         Area flipHorizontal() {
             return with(IntStream.range(0, size)
-                    .mapToObj(i -> contents.get(size - i - 1)));
+                    .mapToObj(i -> grid.get(size - i - 1)));
         }
 
         Area flipVertical() {
-            return with(contents.stream()
+            return with(grid.stream()
                     .map(v -> new StringBuilder(v).reverse().toString()));
         }
 
         Area rotate() {
             return with(IntStream.range(0, size)
                     .mapToObj(x -> IntStream.range(0, size)
-                            .mapToObj(contents::get)
+                            .mapToObj(grid::get)
                             .map(v -> String.valueOf(v.charAt(x)))
                             .collect(Collectors.joining())));
         }
@@ -126,12 +121,12 @@ final class Day21 {
         @Override
         public boolean equals(Object o) {
             return o instanceof Area
-                    && Objects.equals(contents, ((Area) o).contents);
+                    && Objects.equals(grid, ((Area) o).grid);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(contents);
+            return Objects.hash(grid);
         }
     }
 
@@ -163,7 +158,7 @@ final class Day21 {
         static Rule from(String rule) {
             Matcher matcher = PARSER.matcher(rule);
             if (!matcher.matches()) {
-                throw new UnexpectedException("Unable to parse: " + rule);
+                throw new UnexpectedException("rule but got: " + rule);
             }
             return new Rule(
                     convert(matcher.group("input")),

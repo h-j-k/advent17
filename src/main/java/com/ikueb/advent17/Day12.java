@@ -19,8 +19,7 @@ final class Day12 {
 
     static int getTotalGroupCount(Collection<String> programs) {
         int counter = 0;
-        for (Map<Integer, Program> map = generateMap(programs);
-             !map.isEmpty();
+        for (Map<Integer, Program> map = generateMap(programs); !map.isEmpty();
              getTargets(map, map.keySet().iterator().next()).stream()
                      .map(Program::getId).forEach(map::remove)) {
             counter++;
@@ -30,7 +29,7 @@ final class Day12 {
 
     private static Set<Program> getTargets(Map<Integer, Program> map, int groupId) {
         Program target = map.get(groupId);
-        Set<Program> seen = new HashSet<>(Collections.singleton(target));
+        Set<Program> seen = new HashSet<>(Set.of(target));
         aggregate(target.streamTargetsExcluding(seen), seen);
         return seen;
     }
@@ -79,7 +78,7 @@ final class Day12 {
         static Program parse(String line) {
             Matcher matcher = LINE_PARSER.matcher(line);
             if (!matcher.matches()) {
-                throw new UnexpectedException("Unable to parse: " + line);
+                throw new UnexpectedException("program but got: " + line);
             }
             return new Program(
                     Integer.parseInt(matcher.group("id")),

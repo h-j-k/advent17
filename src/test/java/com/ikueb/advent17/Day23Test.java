@@ -19,7 +19,7 @@ public class Day23Test {
 
     @Test
     public void testGetH() {
-        assertThat(getH(84), equalTo(903));
+        assertThat(getH(84), equalTo(903L));
     }
 
     private static final List<String> INPUTS = Arrays.asList(

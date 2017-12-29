@@ -33,7 +33,7 @@ public class Day22Test {
             case FLAGGED:
                 return direction.reverse();
             default:
-                throw new UnexpectedException("Expecting a direction.");
+                throw new UnexpectedException("direction");
         }
     };
     private static final UnaryOperator<Day22.State>

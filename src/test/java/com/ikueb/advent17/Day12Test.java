@@ -27,7 +27,8 @@ public class Day12Test {
     }
 
     @Test(expectedExceptions = UnexpectedException.class,
-            expectedExceptionsMessageRegExp = "^Unable to parse: malformed_line")
+            expectedExceptionsMessageRegExp =
+                    "Expecting a program but got: malformed_line.")
     public void testUnableToParseMalformedLine() {
         Program.parse("malformed_line");
     }

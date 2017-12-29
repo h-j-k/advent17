@@ -18,6 +18,12 @@ public class Day25Test {
         assertThat(getDiagnosticChecksum(INPUT), equalTo(2846L));
     }
 
+    @Test(expectedExceptions = UnexpectedException.class,
+            expectedExceptionsMessageRegExp = "^Expecting a value.")
+    public void testUnableToParseMalformedLine() {
+        getDiagnosticChecksum(List.of("No value to extract"));
+    }
+
     private static final List<String> EXAMPLE = Arrays.asList(
             "Begin in state A.",
             "Perform a diagnostic checksum after 6 steps.",

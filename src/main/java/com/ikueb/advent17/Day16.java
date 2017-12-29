@@ -61,8 +61,7 @@ final class Day16 {
                 case 'p':
                     return PARTNER;
                 default:
-                    throw new UnexpectedException(
-                            "Should be one of: sX, xA/B, pA/B");
+                    throw new UnexpectedException("value of: sX, xA/B, pA/B");
             }
         }
 
