@@ -12,15 +12,15 @@ final class Day10 {
     }
 
     static int knotAndMultiplyFirstTwo(int listSize, int[] lengths) {
-        int[] result = knot(new Payload(listSize), lengths).copyResult();
+        var result = knot(new Payload(listSize), lengths).copyResult();
         return result[0] * result[1];
     }
 
     static String hash(String value) {
-        int[] lengths = IntStream.concat(
+        var lengths = IntStream.concat(
                 value.chars(),
                 IntStream.of(17, 31, 73, 47, 23)).toArray();
-        int[] result = IntStream.range(0, 64).boxed().reduce(
+        var result = IntStream.range(0, 64).boxed().reduce(
                 new Payload(256),
                 (r, i) -> knot(r, lengths),
                 (a, b) -> { throw new UnsupportedOperationException(); })
@@ -34,21 +34,21 @@ final class Day10 {
     }
 
     private static Payload knot(Payload payload, int[] lengths) {
-        int[] input = payload.copyResult();
-        int start = payload.start;
-        int skip = payload.skip;
-        int listSize = input.length;
+        var input = payload.copyResult();
+        var start = payload.start;
+        var skip = payload.skip;
+        var listSize = input.length;
         IntBinaryOperator index = (a, b) -> a + b - listSize * ((a + b) / listSize);
         for (int i = 0, current = lengths[i];
              i < lengths.length;
              i++, start = index.applyAsInt(start, current + skip), skip++,
                      current = lengths[i == lengths.length ? 0 : i]) {
-            int t = start;
-            int[] selection = IntStream.range(0, current)
+            var t = start;
+            var selection = IntStream.range(0, current)
                     .map(j -> index.applyAsInt(t, j))
                     .toArray();
-            for (int j = 0; j < current / 2; j++) {
-                int temp = input[selection[j]];
+            for (var j = 0; j < current / 2; j++) {
+                var temp = input[selection[j]];
                 input[selection[j]] = input[selection[current - j - 1]];
                 input[selection[current - j - 1]] = temp;
             }

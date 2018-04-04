@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
@@ -19,12 +18,12 @@ final class Day04 {
     }
 
     static boolean isValid(String passphrase, UnaryOperator<String> mapper) {
-        Set<String> seen = new HashSet<>();
+        var seen = new HashSet<String>();
         return SPLITTER.splitAsStream(passphrase).map(mapper).allMatch(seen::add);
     }
 
     static String reform(String input) {
-        char[] temp = input.toCharArray();
+        var temp = input.toCharArray();
         Arrays.sort(temp);
         return new String(temp);
     }

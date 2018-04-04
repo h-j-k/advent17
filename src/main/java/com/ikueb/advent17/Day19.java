@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 final class Day19 {
@@ -13,14 +14,14 @@ final class Day19 {
     }
 
     static Result getPath(List<String> grid) {
-        StringBuilder result = new StringBuilder();
-        Set<Element> paths = toPaths(grid);
-        Element origin = paths.stream()
+        var result = new StringBuilder();
+        var paths = toPaths(grid);
+        var origin = paths.stream()
                 .filter(Element::isStart)
                 .findAny()
                 .orElseThrow(() -> new UnexpectedException("starting element."));
-        Direction direction = Direction.S;
-        int counter = 1;
+        var direction = Direction.S;
+        var counter = 1;
         for (Element previous = null, current = origin; ;
              previous = current, current = current.next(direction, paths)) {
             if (current.isLetter()) {
@@ -39,13 +40,10 @@ final class Day19 {
     private static Set<Element> toPaths(List<String> grid) {
         return IntStream.range(0, grid.size())
                 .boxed()
-                .flatMap(y -> {
-                    String row = grid.get(y);
-                    return IntStream.range(0, row.length())
-                            .mapToObj(x -> new Element(x, y, row.charAt(x)));
-                })
+                .flatMap(y -> IntStream.range(0, grid.get(y).length())
+                        .mapToObj(x -> new Element(x, y, grid.get(y).charAt(x))))
                 .filter(Element::isPath)
-                .collect(MainUtils.toUnmodifiableSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     static final class Result {
@@ -116,7 +114,7 @@ final class Day19 {
         }
 
         Direction nextDirection(Element previous, Set<Element> paths) {
-            Map<Element, Direction> neighbours = getNeighborsRelativeTo(paths);
+            var neighbours = getNeighborsRelativeTo(paths);
             return neighbours.keySet().stream()
                     .filter(element -> !previous.equals(element))
                     .findFirst()
@@ -129,7 +127,7 @@ final class Day19 {
         }
 
         Element next(Direction current, Set<Element> paths) {
-            Map<Element, Direction> neighbours = getNeighborsRelativeTo(paths);
+            var neighbours = getNeighborsRelativeTo(paths);
             return neighbours.keySet().stream()
                     .filter(element -> neighbours.get(element) == current)
                     .findFirst()
@@ -140,7 +138,8 @@ final class Day19 {
         @Override
         public boolean equals(Object o) {
             return o instanceof Element
-                    && x == ((Element) o).x && y == ((Element) o).y;
+                    && x == ((Element) o).x
+                    && y == ((Element) o).y;
         }
 
         @Override

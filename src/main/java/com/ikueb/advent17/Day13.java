@@ -1,7 +1,6 @@
 package com.ikueb.advent17;
 
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,9 +21,9 @@ final class Day13 {
     }
 
     static int getMinimumDelay(List<String> levels) {
-        List<Layer> layers = levels.stream()
+        var layers = levels.stream()
                 .map(Layer::parse)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
         return IntStream.range(1, MAX_DELAY)
                 .filter(i -> layers.stream()
                         .allMatch(v -> v.getSeverityPlusDelay(i) == 0))
@@ -56,7 +55,7 @@ final class Day13 {
         }
 
         static Layer parse(String layer) {
-            Matcher matcher = PARSER.matcher(layer);
+            var matcher = PARSER.matcher(layer);
             if (!matcher.matches()) {
                 throw new UnexpectedException("layer but got: " + layer);
             }

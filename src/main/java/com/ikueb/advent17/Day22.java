@@ -20,12 +20,12 @@ final class Day22 {
     static int countInfectedNodes(List<String> input, int iterations,
                                   BiFunction<State, Direction, Direction> header,
                                   UnaryOperator<State> updater) {
-        Map<Point, Node> nodes = getNodes(input);
-        Direction direction = Direction.N;
-        Node current = nodes.computeIfAbsent(new Point(0, 0), Node::new);
-        int counter = 0;
-        for (int i = 0; i < iterations; i++) {
-            Step step = current.getNextStep(direction, header, updater);
+        var nodes = getNodes(input);
+        var direction = Direction.N;
+        var current = nodes.computeIfAbsent(new Point(0, 0), Node::new);
+        var counter = 0;
+        for (var i = 0; i < iterations; i++) {
+            var step = current.getNextStep(direction, header, updater);
             direction = step.direction;
             current = nodes.computeIfAbsent(step.point, Node::new);
             if (step.hasCausedInfection) {
@@ -36,7 +36,7 @@ final class Day22 {
     }
 
     private static Map<Point, Node> getNodes(List<String> input) {
-        int edge = input.size() / 2;
+        var edge = input.size() / 2;
         return IntStream.rangeClosed(-1 * edge, edge)
                 .boxed()
                 .flatMap(y -> IntStream.rangeClosed(-1 * edge, edge)
@@ -79,7 +79,7 @@ final class Day22 {
         Step getNextStep(Direction direction,
                          BiFunction<State, Direction, Direction> header,
                          UnaryOperator<State> updater) {
-            Direction nextDirection = header.apply(state, direction);
+            var nextDirection = header.apply(state, direction);
             state = updater.apply(state);
             return new Step(nextDirection, point, state == State.INFECTED);
         }
@@ -96,9 +96,7 @@ final class Day22 {
 
         @Override
         public boolean equals(Object o) {
-            return o instanceof Point
-                    && x == ((Point) o).x
-                    && y == ((Point) o).y;
+            return o instanceof Point && x == ((Point) o).x && y == ((Point) o).y;
         }
 
         @Override

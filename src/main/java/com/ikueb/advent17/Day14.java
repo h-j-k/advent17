@@ -18,13 +18,13 @@ final class Day14 {
     }
 
     static int contiguousRegions(String input) {
-        List<BitSet> rows = convert(input);
-        Set<Element> usedSquares = IntStream.range(0, rows.size())
+        var rows = convert(input);
+        var usedSquares = IntStream.range(0, rows.size())
                 .boxed()
                 .flatMap(y -> rows.get(y).stream().mapToObj(x -> new Element(x, y)))
                 .collect(Collectors.toSet());
-        int counter = 0;
-        for (Set<Element> region = getNextRegion(usedSquares); !region.isEmpty();
+        var counter = 0;
+        for (var region = getNextRegion(usedSquares); !region.isEmpty();
              usedSquares.removeAll(region), region = getNextRegion(usedSquares)) {
             counter++;
         }
@@ -34,7 +34,7 @@ final class Day14 {
     private static Set<Element> getNextRegion(Set<Element> usedSquares) {
         return usedSquares.isEmpty() ? Collections.emptySet()
                 : iterate(usedSquares.iterator().next(), new HashSet<>(), usedSquares)
-                .collect(MainUtils.toUnmodifiableSet());
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     private static Stream<Element> iterate(Element current,
@@ -50,7 +50,7 @@ final class Day14 {
                 .mapToObj(i -> input + "-" + i)
                 .map(Day10::hash)
                 .map(Day14::asBitSet)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private static BitSet asBitSet(String hash) {

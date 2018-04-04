@@ -12,7 +12,7 @@ final class Day17 {
     }
 
     static int getAfter2017For2017(int steps) {
-        int[] values = {0};
+        var values = new int[]{0};
         for (int i = 1, index = 1; ;
              i++, index = (index + steps) % i + 1) {
             values = Stream.of(Arrays.stream(values, 0, index),
@@ -26,7 +26,7 @@ final class Day17 {
     }
 
     static int getAfter0For50Million(int steps) {
-        int result = 0;
+        var result = 0;
         for (int i = 1, index = 1; i <= 50_000_000;
              i++, index = (index + steps) % i + 1) {
             if (index == 1) {

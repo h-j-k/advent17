@@ -1,12 +1,9 @@
 package com.ikueb.advent17;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public enum Instruction implements BiFunction<Map<Character, Long>, String, Long> {
     SND((map, i) -> getValue(map, "  " + i)),
@@ -27,11 +24,7 @@ public enum Instruction implements BiFunction<Map<Character, Long>, String, Long
 
     private static final Map<String, Instruction> INSTRUCTIONS =
             Arrays.stream(values())
-                    .collect(Collectors.collectingAndThen(
-                            Collectors.toMap(
-                                    Instruction::getKey,
-                                    Function.identity()),
-                            Collections::unmodifiableMap));
+                    .collect(MainUtils.mapWithKey(Instruction::getKey));
 
     private final BiFunction<Map<Character, Long>, String, Long> op;
 
@@ -63,7 +56,7 @@ public enum Instruction implements BiFunction<Map<Character, Long>, String, Long
     }
 
     static InstructionResult compute(Map<Character, Long> map, String instruction) {
-        Instruction current = INSTRUCTIONS.get(instruction.substring(0, 3));
+        var current = INSTRUCTIONS.get(instruction.substring(0, 3));
         return new InstructionResult(current, instruction.charAt(4),
                 current.apply(map, instruction.substring(4)));
     }

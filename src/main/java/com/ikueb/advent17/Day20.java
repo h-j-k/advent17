@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,21 +17,20 @@ final class Day20 {
     }
 
     static int getClosestParticleToOrigin(List<String> input) {
-        List<Particle> particles = toParticles(input);
+        var particles = toParticles(input);
         return IntStream.range(0, particles.size())
                 .boxed()
-                .sorted(Comparator.comparing(
+                .min(Comparator.comparing(
                         i -> particles.get(i).getTotalAcceleration()))
-                .findFirst()
                 .orElseThrow(() -> new UnexpectedException("particle"));
     }
 
     static int countParticlesNotCollided(List<String> input) {
-        List<Particle> particles = toParticles(input);
-        int lastCount = -1;
-        for (int i = 1; lastCount != particles.size() || i <= ITERATIONS; i++) {
+        var particles = toParticles(input);
+        var lastCount = -1;
+        for (var i = 1; lastCount != particles.size() || i <= ITERATIONS; i++) {
             lastCount = particles.size();
-            int t = i;
+            var t = i;
             particles.stream()
                     .collect(Collectors.groupingBy(p -> p.positionAt(t)))
                     .values()
@@ -105,7 +103,7 @@ final class Day20 {
         }
 
         static Particle from(String definition) {
-            Matcher matcher = PARSER.matcher(definition);
+            var matcher = PARSER.matcher(definition);
             if (!matcher.matches()) {
                 throw new UnexpectedException("particle but got: " + definition);
             }

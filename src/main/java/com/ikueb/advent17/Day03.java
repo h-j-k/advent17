@@ -12,9 +12,9 @@ final class Day03 {
     }
 
     static int stepsTo(int n) {
-        int layer = getLayer(n);
-        int end = getLayerMax(layer) - layer;
-        int chosen = IntStream.rangeClosed(0, 3)
+        var layer = getLayer(n);
+        var end = getLayerMax(layer) - layer;
+        var chosen = IntStream.rangeClosed(0, 3)
                 .map(i -> end - 2 * layer * i)
                 .filter(i -> n >= i || n > i - layer)
                 .findFirst()
@@ -23,7 +23,7 @@ final class Day03 {
     }
 
     static int getFirstAfter(int min) {
-        Map<Integer, Integer> map = new HashMap<>();
+        var map = new HashMap<Integer, Integer>();
         return IntStream.iterate(1, i -> i + 1)
                 .dropWhile(i -> find(map, i) <= min)
                 .boxed()
@@ -38,7 +38,7 @@ final class Day03 {
     }
 
     private static int getLayer(int n) {
-        int result = 0;
+        var result = 0;
         while (getLayerMax(result) < n) {
             result++;
         }
@@ -72,16 +72,16 @@ final class Day03 {
         }
 
         private IntStream with(int n) {
-            int layer = getLayer(n);
-            int innerLayerMax = getLayerMax(layer - 1);
+            var layer = getLayer(n);
+            var innerLayerMax = getLayerMax(layer - 1);
             if (isCorner()) {
-                int inner = innerLayerMax - (layer - 1) * ordinal();
+                var inner = innerLayerMax - (layer - 1) * ordinal();
                 return this == BOTTOM_RIGHT
                         ? IntStream.of(n - 1, inner, inner + 1)
                         : IntStream.of(n - 1, inner);
             }
-            int inner = n - (4 * 2 * layer - ordinal());
-            int[] result = new int[]{n - 1, inner - 1, inner, inner + 1};
+            var inner = n - (4 * 2 * layer - ordinal());
+            var result = new int[]{n - 1, inner - 1, inner, inner + 1};
             if (n - 1 == innerLayerMax) {
                 result = new int[]{n - 1, inner + 1};
             } else if (n - 2 == innerLayerMax || get(n - 1).isCorner()) {

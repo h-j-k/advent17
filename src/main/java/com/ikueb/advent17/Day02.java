@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.IntSummaryStatistics;
 import java.util.function.ToIntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -18,7 +17,7 @@ final class Day02 {
         return checksum(input.stream()
                 .map(Pattern.compile("\\s+")::splitAsStream)
                 .map(s -> s.mapToInt(Integer::parseInt).toArray())
-                .collect(Collectors.toList()), function);
+                .collect(Collectors.toUnmodifiableList()), function);
     }
 
     private static int checksum(Collection<int[]> matrix,
@@ -29,15 +28,15 @@ final class Day02 {
     }
 
     static int diff(int... values) {
-        IntSummaryStatistics stats = Arrays.stream(values).summaryStatistics();
+        var stats = Arrays.stream(values).summaryStatistics();
         return stats.getMax() - stats.getMin();
     }
 
     static int evenlyDivisible(int... values) {
-        for (int i = 0; i < values.length; i++) {
-            for (int j = i + 1; j < values.length; j++) {
-                int a = values[i];
-                int b = values[j];
+        for (var i = 0; i < values.length; i++) {
+            for (var j = i + 1; j < values.length; j++) {
+                var a = values[i];
+                var b = values[j];
                 if (a % b == 0 || b % a == 0) {
                     return a > b ? a / b : b / a;
                 }

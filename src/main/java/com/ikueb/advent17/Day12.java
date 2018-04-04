@@ -1,8 +1,10 @@
 package com.ikueb.advent17;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,8 +20,8 @@ final class Day12 {
     }
 
     static int getTotalGroupCount(Collection<String> programs) {
-        int counter = 0;
-        for (Map<Integer, Program> map = generateMap(programs); !map.isEmpty();
+        var counter = 0;
+        for (var map = generateMap(programs); !map.isEmpty();
              getTargets(map, map.keySet().iterator().next()).stream()
                      .map(Program::getId).forEach(map::remove)) {
             counter++;
@@ -28,14 +30,14 @@ final class Day12 {
     }
 
     private static Set<Program> getTargets(Map<Integer, Program> map, int groupId) {
-        Program target = map.get(groupId);
-        Set<Program> seen = new HashSet<>(Set.of(target));
+        var target = map.get(groupId);
+        var seen = new HashSet<>(Set.of(target));
         aggregate(target.streamTargetsExcluding(seen), seen);
         return seen;
     }
 
     private static Map<Integer, Program> generateMap(Collection<String> programs) {
-        Map<Integer, Program> map = programs.stream()
+        var map = programs.stream()
                 .map(Program::parse)
                 .collect(Collectors.toMap(Program::getId, Function.identity()));
         map.values().forEach(p -> p.setTargets(map));
@@ -76,7 +78,7 @@ final class Day12 {
         }
 
         static Program parse(String line) {
-            Matcher matcher = LINE_PARSER.matcher(line);
+            var matcher = LINE_PARSER.matcher(line);
             if (!matcher.matches()) {
                 throw new UnexpectedException("program but got: " + line);
             }
@@ -84,7 +86,7 @@ final class Day12 {
                     Integer.parseInt(matcher.group("id")),
                     TARGET_PARSER.splitAsStream(matcher.group("target"))
                             .map(Integer::valueOf)
-                            .collect(MainUtils.toUnmodifiableSet()));
+                            .collect(Collectors.toUnmodifiableSet()));
         }
     }
 }

@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,9 +17,9 @@ final class Day21 {
     }
 
     static long countPixelsOnAfterIterations(int iterations, List<String> input) {
-        List<Rule> rules = input.stream()
+        var rules = input.stream()
                 .map(Rule::from)
-                .collect(Collectors.toList());
+                .collect(Collectors.toUnmodifiableList());
         return Stream.iterate(AREA_SUPPLIER.get(), a -> a.next(rules))
                 .skip(iterations)
                 .findFirst()
@@ -44,7 +43,7 @@ final class Day21 {
         }
 
         Area next(List<Rule> rules) {
-            int newSize = size % 2 == 0 ? (size / 2) * 3 : (size / 3) * 4;
+            var newSize = size % 2 == 0 ? (size / 2) * 3 : (size / 3) * 4;
             return split()
                     .map(v -> v.convert(rules))
                     .reduce(new Area(newSize), Area::join);
@@ -54,8 +53,8 @@ final class Day21 {
             if (this.size == 3) {
                 return Stream.of(this);
             }
-            int columns = size % 2 == 0 ? size / 2 : size / 3;
-            int width = size / columns;
+            var columns = size % 2 == 0 ? size / 2 : size / 3;
+            var width = size / columns;
             return IntStream.iterate(0, i -> i < size, i -> i + width)
                     .boxed()
                     .flatMap(i -> IntStream.iterate(0, j -> j < size, j -> j + width)
@@ -63,7 +62,7 @@ final class Day21 {
                             .map(j -> IntStream.range(i, i + width)
                                     .mapToObj(y -> grid.get(y).substring(j, j + width))
                                     .collect(Collectors.collectingAndThen(
-                                            Collectors.toList(), Area::new))));
+                                            Collectors.toUnmodifiableList(), Area::new))));
         }
 
         private Area convert(List<Rule> rules) {
@@ -75,12 +74,12 @@ final class Day21 {
         }
 
         private Area join(Area other) {
-            int columns = size / other.size;
+            var columns = size / other.size;
             if (added % columns == 0) {
                 grid.addAll(other.grid);
             } else {
-                int start = other.size * (added / columns);
-                Iterator<String> iterator = other.grid.iterator();
+                var start = other.size * (added / columns);
+                var iterator = other.grid.iterator();
                 IntStream.iterate(start, i -> i < start + other.size, i -> i + 1)
                         .forEach(i -> grid.set(i, grid.get(i) + iterator.next()));
             }
@@ -115,13 +114,12 @@ final class Day21 {
 
         private static Area with(Stream<String> stream) {
             return stream.collect(Collectors.collectingAndThen(
-                    Collectors.toList(), Area::new));
+                    Collectors.toUnmodifiableList(), Area::new));
         }
 
         @Override
         public boolean equals(Object o) {
-            return o instanceof Area
-                    && Objects.equals(grid, ((Area) o).grid);
+            return o instanceof Area && Objects.equals(grid, ((Area) o).grid);
         }
 
         @Override
@@ -156,7 +154,7 @@ final class Day21 {
         }
 
         static Rule from(String rule) {
-            Matcher matcher = PARSER.matcher(rule);
+            var matcher = PARSER.matcher(rule);
             if (!matcher.matches()) {
                 throw new UnexpectedException("rule but got: " + rule);
             }
@@ -167,7 +165,7 @@ final class Day21 {
 
         private static Area convert(String area) {
             return new Area(SPLITTER.splitAsStream(area)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toUnmodifiableList()));
         }
     }
 }

@@ -25,33 +25,32 @@ final class Day07 {
     }
 
     static int getCorrectedWeight(Collection<String> programs) {
-        Map<String, Program> map = generateMap(programs);
+        var map = generateMap(programs);
         return getCorrectedWeight(0, map.get(getBottomProgram(map)));
     }
 
     private static int getCorrectedWeight(int delta, Program parent) {
-        Map<Integer, Set<Program>> childrenWeight =
-                parent.getChildrenWeight().entrySet().stream()
-                        .collect(Collectors.groupingBy(
-                                Entry::getValue,
-                                Collectors.mapping(Entry::getKey, Collectors.toSet())));
+        var childrenWeight = parent.getChildrenWeight().entrySet().stream()
+                .collect(Collectors.groupingBy(
+                        Entry::getValue,
+                        Collectors.mapping(Entry::getKey, Collectors.toUnmodifiableSet())));
         if (childrenWeight.size() < 2) {
             return parent.getWeight() - delta;
         }
-        IntSummaryStatistics stats = childrenWeight.keySet().stream()
+        var stats = childrenWeight.keySet().stream()
                 .collect(Collectors.summarizingInt(Integer::intValue));
-        Entry<Integer, Set<Program>> unbalanced = childrenWeight.entrySet().stream()
+        var unbalanced = childrenWeight.entrySet().stream()
                 .filter(entry -> entry.getValue().size() == 1)
                 .iterator()
                 .next();
-        int newDelta = unbalanced.getKey() == stats.getMin()
+        var newDelta = unbalanced.getKey() == stats.getMin()
                 ? stats.getMin() - stats.getMax()
                 : stats.getMax() - stats.getMin();
         return getCorrectedWeight(newDelta, unbalanced.getValue().iterator().next());
     }
 
     private static Map<String, Program> generateMap(Collection<String> programs) {
-        Map<String, Program> map = programs.stream()
+        var map = programs.stream()
                 .map(Program::parse)
                 .collect(MainUtils.mapWithKey(Program::getName));
         map.values().forEach(p -> p.setChildren(map));
@@ -117,7 +116,7 @@ final class Day07 {
                     CHILDREN_PARSER.splitAsStream(
                             Objects.toString(matcher.group("children"), ""))
                             .filter(v -> !v.isEmpty())
-                            .collect(MainUtils.toUnmodifiableSet()));
+                            .collect(Collectors.toUnmodifiableSet()));
         }
     }
 }

@@ -3,7 +3,6 @@ package com.ikueb.advent17;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.BiFunction;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -17,17 +16,17 @@ final class Day25 {
     }
 
     static long getDiagnosticChecksum(List<String> inputs) {
-        Iterator<String> iterator = inputs.iterator();
-        char stateName = getCharacter(iterator.next());
-        int iterations = getNumber(iterator.next());
-        Map<Character, State> states = getStateMap(iterator);
-        Map<Integer, Integer> results = new HashMap<>(Map.of(0, 0));
-        int index = 0;
-        for (int i = 0; i < iterations; i++) {
-            State current = states.get(stateName);
-            int value = results.getOrDefault(index, 0);
+        var iterator = inputs.iterator();
+        var stateName = getCharacter(iterator.next());
+        var iterations = getNumber(iterator.next());
+        var states = getStateMap(iterator);
+        var results = new HashMap<>(Map.of(0, 0));
+        var index = 0;
+        for (var i = 0; i < iterations; i++) {
+            var current = states.get(stateName);
+            var value = results.getOrDefault(index, 0);
             stateName = current.nextStateName(value);
-            int shiftBy = current.shiftBy(value);
+            var shiftBy = current.shiftBy(value);
             results.compute(index, current);
             index += shiftBy;
         }
@@ -35,7 +34,7 @@ final class Day25 {
     }
 
     private static Map<Character, State> getStateMap(Iterator<String> iterator) {
-        Map<Character, State> map = new HashMap<>();
+        var map = new HashMap<Character, State>();
         while (iterator.hasNext()) {
             iterator.next();
             map.put(getCharacter(iterator.next()),
@@ -53,7 +52,7 @@ final class Day25 {
     }
 
     private static String getValue(String input) {
-        Matcher matcher = EXTRACTOR.matcher(input);
+        var matcher = EXTRACTOR.matcher(input);
         if (matcher.matches()) {
             return matcher.group(1);
         }
@@ -86,9 +85,7 @@ final class Day25 {
         State(Map<Integer, Step>... conditions) {
             this.conditions = Arrays.stream(conditions)
                     .flatMap(m -> m.entrySet().stream())
-                    .collect(Collectors.collectingAndThen(
-                            Collectors.toMap(Entry::getKey, Entry::getValue),
-                            Collections::unmodifiableMap));
+                    .collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
         }
 
         int shiftBy(int value) {

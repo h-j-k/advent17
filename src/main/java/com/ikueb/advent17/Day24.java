@@ -14,20 +14,20 @@ final class Day24 {
 
     static Result findStrongestBridge(List<String> inputs,
                                       Comparator<Result> comparator) {
-        Map<Integer, Set<Bridge>> bridges = inputs.stream()
+        var bridges = inputs.stream()
                 .map(Bridge::from)
                 .flatMap(Bridge::stream)
                 .collect(Collectors.groupingBy(
                         Entry::getKey,
-                        Collectors.mapping(Entry::getValue, Collectors.toSet())));
+                        Collectors.mapping(Entry::getValue, Collectors.toUnmodifiableSet())));
         return findMax(comparator, bridges, 0);
     }
 
     private static Result findMax(Comparator<Result> comparator,
                                   Map<Integer, Set<Bridge>> bridges,
                                   int side) {
-        Result result = Result.START;
-        for (Bridge bridge : bridges.getOrDefault(side, Collections.emptySet())) {
+        var result = Result.START;
+        for (var bridge : bridges.getOrDefault(side, Collections.emptySet())) {
             if (!bridge.isUsed()) {
                 bridge.setUsed(true);
                 result = Result.max(comparator, result, findMax(
@@ -113,7 +113,7 @@ final class Day24 {
         }
 
         static Bridge from(String input) {
-            String[] parts = input.split("/");
+            var parts = input.split("/");
             return new Bridge(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
         }
 

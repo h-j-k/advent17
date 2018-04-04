@@ -1,6 +1,9 @@
 package com.ikueb.advent17;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -13,11 +16,11 @@ final class Day18 {
     }
 
     static long recoverFrequency(List<String> instructions) {
-        long lastPlayed = -1;
-        Map<Character, Long> map = new HashMap<>();
-        List<String> temp = new ArrayList<>(instructions);
+        var lastPlayed = -1L;
+        var map = new HashMap<Character, Long>();
+        var temp = new ArrayList<>(instructions);
         Result result;
-        for (int i = 0; ; i += result.jumpToNextInstruction()) {
+        for (var i = 0; ; i += result.jumpToNextInstruction()) {
             result = new Result(Instruction.compute(map, temp.get(i)));
             if (result.isPlayed()) {
                 lastPlayed = result.getValue();
@@ -28,8 +31,8 @@ final class Day18 {
     }
 
     static int getNumberOfSends(List<String> instructions) {
-        Program zero = new Program(0, instructions);
-        Program one = new Program(1, instructions).link(zero);
+        var zero = new Program(0, instructions);
+        var one = new Program(1, instructions).link(zero);
         return CompletableFuture.allOf(
                 CompletableFuture.runAsync(zero),
                 CompletableFuture.runAsync(one))
@@ -58,7 +61,7 @@ final class Day18 {
 
         public void run() {
             Result result;
-            for (int i = 0; ; i += result.jumpToNextInstruction()) {
+            for (var i = 0; ; i += result.jumpToNextInstruction()) {
                 result = new Result(Instruction.compute(map, temp.get(i)));
                 if (result.isSending() && queue.add(result.getValue())) {
                     counter++;

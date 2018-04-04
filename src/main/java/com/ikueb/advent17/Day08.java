@@ -32,7 +32,7 @@ final class Day08 {
     }
 
     static int getLargestRegisterEver(List<String> instructions) {
-        int[] result = {Integer.MIN_VALUE};
+        var result = new int[]{Integer.MIN_VALUE};
         process(instructions, value -> {
             if (value > result[0]) {
                 result[0] = value;
@@ -43,7 +43,7 @@ final class Day08 {
 
     private static Map<String, Integer> process(List<String> instructions,
                                                 Consumer<Integer> consumer) {
-        Map<String, Integer> registers = new HashMap<>();
+        var registers = new HashMap<String, Integer>();
         instructions.stream()
                 .map(PARSER::matcher)
                 .filter(Matcher::matches)

@@ -8,10 +8,10 @@ final class Day09 {
 
     static Result process(String input) {
         Result result = new Result();
-        int level = 0;
-        boolean isGarbageMode = false;
+        var level = 0;
+        var isGarbageMode = false;
         char current;
-        for (int i = 0; i < input.length(); i += (1 + (current == '!' ? 1 : 0))) {
+        for (var i = 0; i < input.length(); i += (1 + (current == '!' ? 1 : 0))) {
             current = input.charAt(i);
             if (current == '!') {
                 continue;

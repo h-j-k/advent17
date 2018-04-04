@@ -14,8 +14,8 @@ final class Day05 {
     }
 
     static int getSteps(IntUnaryOperator op, int... inputs) {
-        int[] x = Arrays.copyOf(inputs, inputs.length);
-        int counter = 0;
+        var x = Arrays.copyOf(inputs, inputs.length);
+        var counter = 0;
         for (int i = 0, j; i < x.length;
              j = x[i], x[i] = op.applyAsInt(x[i]), i += j) {
             counter++;

@@ -2,7 +2,6 @@ package com.ikueb.advent17;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.function.IntUnaryOperator;
 import java.util.stream.IntStream;
 
@@ -39,9 +38,9 @@ final class Day06 {
         }
 
         static DuplicateCountResult get(BanksWrapper banksWrapper) {
-            Set<BanksWrapper> seen = new HashSet<>();
-            BanksWrapper current = banksWrapper;
-            int counter = 0;
+            var seen = new HashSet<BanksWrapper>();
+            var current = banksWrapper;
+            var counter = 0;
             while (seen.add(current)) {
                 counter++;
                 current = current.reallocate();
@@ -59,14 +58,14 @@ final class Day06 {
         }
 
         BanksWrapper reallocate() {
-            int[] copy = Arrays.copyOf(banks, banks.length);
-            int n = copy.length;
-            int max = IntStream.range(0, n)
+            var copy = Arrays.copyOf(banks, banks.length);
+            var n = copy.length;
+            var max = IntStream.range(0, n)
                     .reduce(0, (a, b) -> copy[a] < copy[b] ? b : a);
-            int reallocate = copy[max];
+            var reallocate = copy[max];
             copy[max] = 0;
             IntUnaryOperator increment = i -> i + 1 == n ? 0 : i + 1;
-            for (int i = increment.applyAsInt(max); reallocate > 0;
+            for (var i = increment.applyAsInt(max); reallocate > 0;
                  i = increment.applyAsInt(i), reallocate--) {
                 copy[i]++;
             }

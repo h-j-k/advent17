@@ -22,7 +22,7 @@ final class Day01 {
     }
 
     static int jumpSum(int... values) {
-        int half = values.length / 2;
+        var half = values.length / 2;
         return sum(half, i -> i + half, (a, b) -> a == b ? 2 * a : 0, values);
     }
 

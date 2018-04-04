@@ -1,8 +1,6 @@
 package com.ikueb.advent17;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.BinaryOperator;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -27,11 +25,11 @@ final class Day16 {
     }
 
     static String danceTillDrop(String input, String instructions) {
-        List<String> instructionList = SPLITTER.splitAsStream(instructions)
-                .collect(Collectors.toList());
-        Map<String, String> cache = new HashMap<>();
-        String previous = input;
-        for (int i = 0; i < 1_000_000_000; i++) {
+        var instructionList = SPLITTER.splitAsStream(instructions)
+                .collect(Collectors.toUnmodifiableList());
+        var cache = new HashMap<String, String>();
+        var previous = input;
+        for (var i = 0; i < 1_000_000_000; i++) {
             previous = cache.computeIfAbsent(previous,
                     k -> dance(k, instructionList.stream()));
         }
@@ -40,18 +38,18 @@ final class Day16 {
 
     private enum Instruction implements BinaryOperator<String> {
         SPIN((programs, instruction) -> {
-            int offset = programs.length() - Integer.parseInt(instruction);
+            var offset = programs.length() - Integer.parseInt(instruction);
             return programs.substring(offset) + programs.substring(0, offset);
         }),
         EXCHANGE((programs, instruction) -> {
-            int slash = instruction.indexOf('/');
-            int aIndex = Integer.parseInt(instruction.substring(0, slash));
-            int bIndex = Integer.parseInt(instruction.substring(1 + slash));
+            var slash = instruction.indexOf('/');
+            var aIndex = Integer.parseInt(instruction.substring(0, slash));
+            var bIndex = Integer.parseInt(instruction.substring(1 + slash));
             return swap(programs, aIndex, bIndex);
         }),
         PARTNER((programs, instruction) -> {
-            int aIndex = programs.indexOf(instruction.charAt(0));
-            int bIndex = programs.indexOf(instruction.charAt(2));
+            var aIndex = programs.indexOf(instruction.charAt(0));
+            var bIndex = programs.indexOf(instruction.charAt(2));
             return swap(programs, aIndex, bIndex);
         });
 
@@ -75,8 +73,8 @@ final class Day16 {
         }
 
         private static String swap(String programs, int aIndex, int bIndex) {
-            char[] chars = programs.toCharArray();
-            char temp = chars[aIndex];
+            var chars = programs.toCharArray();
+            var temp = chars[aIndex];
             chars[aIndex] = chars[bIndex];
             chars[bIndex] = temp;
             return new String(chars);
