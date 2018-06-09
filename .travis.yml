@@ -3,10 +3,13 @@ addons:
   sonarqube:
     organization: "h-j-k-github"
 language: java
-jdk:
-- oraclejdk10
 before_install:
+- wget https://github.com/sormuras/bach/raw/master/install-jdk.sh
 - chmod +x ./gradlew
+matrix:
+  include:
+    - env: JDK='Oracle JDK 10'
+      install: . ./install-jdk.sh -F 10 -L BCL
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
